@@ -11,6 +11,7 @@
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
+// @grant        GM.registerMenuCommand
 // @grant        GM_xmlhttpRequest
 // @grant        GM_notification
 // @connect      api.openai.com
@@ -59,6 +60,7 @@
 
   GM_addStyle(getStyles());
   registerMenus();
+  registerKeyboardShortcut();
 
   document.addEventListener('click', function (event) {
     const bookmarkBtn = findAncestorByTestId(event.target, 'bookmark');
@@ -84,12 +86,33 @@
   }
 
   function registerMenus() {
-    if (typeof GM_registerMenuCommand !== 'function') return;
-    GM_registerMenuCommand('打开设置', openSettingsPanel);
-    GM_registerMenuCommand('查看历史记录', openHistoryPanel);
-    GM_registerMenuCommand('切换 AI 开关', function () {
+    const registerMenuCommand = getMenuCommandRegistrar();
+    if (!registerMenuCommand) return;
+    registerMenuCommand(SCRIPT_NAME + ': 打开设置', openSettingsPanel);
+    registerMenuCommand(SCRIPT_NAME + ': 查看历史记录', openHistoryPanel);
+    registerMenuCommand(SCRIPT_NAME + ': 切换 AI 开关', function () {
       saveSettings({ aiEnabled: !settings.aiEnabled });
       notify('AI 摘要已' + (settings.aiEnabled ? '开启' : '关闭'));
+    });
+  }
+
+  function getMenuCommandRegistrar() {
+    if (typeof GM_registerMenuCommand === 'function') {
+      return GM_registerMenuCommand;
+    }
+    if (typeof GM !== 'undefined' && typeof GM.registerMenuCommand === 'function') {
+      return GM.registerMenuCommand.bind(GM);
+    }
+    return null;
+  }
+
+  function registerKeyboardShortcut() {
+    document.addEventListener('keydown', function (event) {
+      const key = (event.key || '').toLowerCase();
+      if (event.shiftKey && event.altKey && key === 'b') {
+        event.preventDefault();
+        openSettingsPanel();
+      }
     });
   }
 
