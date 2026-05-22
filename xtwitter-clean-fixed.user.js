@@ -3,7 +3,7 @@
 // @name:ja      X/Twitter きれいなメニューとサイドバー（多言語対応）
 // @name:zh-TW   X/Twitter 乾淨的選單和側邊欄（支持多種語言）
 // @name:zh-CN   X/Twitter 干净的选单和侧边栏（支持多种语言）
-// @version      3.7.2-clickfix
+// @version      3.7.3-clickfix
 // @description  Hidden Menu,Grok,Premium subscription,Verified Orgs,other,Explore,Notifications,Messages,Communities,Bookmarks,Right Column, Muted Account Notices and Customizable Settings
 // @description:ja    清潔なメニュー、Grok、高度なサブスクリプション、認証済み組織、他の、探索、通知、メッセージ、コミュニティ、ブックマーク、右側カラム、ミュート通知、およびカスタム設定
 // @description:zh-TW 乾淨的 選單、Grok、高級訂閱、已認證組織、其他、探索、通知、訊息、社群、書籤、右側邊欄、靜音通知和可自訂設定
@@ -22,7 +22,7 @@
 
 (function() {
     'use strict';
-    const SCRIPT_VERSION = '3.7.2-clickfix';
+    const SCRIPT_VERSION = '1.0.0';
 
     const defaultSettings = {
         hideGrok: true,
@@ -841,6 +841,10 @@
             event.stopImmediatePropagation();
 
             forwardingBackClick = true;
+            button.classList.add('x-clean-back-click-feedback');
+            window.setTimeout(() => {
+                button.classList.remove('x-clean-back-click-feedback');
+            }, 180);
             button.click();
             window.setTimeout(() => {
                 forwardingBackClick = false;
@@ -1089,6 +1093,12 @@
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] [data-testid="app-bar-back"] * {
                 pointer-events: auto !important;
+            }
+
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] .x-clean-back-click-feedback {
+                background-color: rgba(239, 243, 244, 0.16) !important;
+                border-radius: 9999px !important;
+                transition: background-color 120ms ease-out !important;
             }
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] [role="heading"] {
