@@ -841,14 +841,23 @@
             event.stopImmediatePropagation();
 
             forwardingBackClick = true;
-            button.classList.add('x-clean-back-click-feedback');
+            const feedback = document.createElement('div');
+            feedback.className = 'x-clean-back-click-feedback';
+            feedback.style.left = `${rect.left + rect.width / 2}px`;
+            feedback.style.top = `${rect.top + rect.height / 2}px`;
+            document.body.appendChild(feedback);
+
+            window.requestAnimationFrame(() => {
+                feedback.classList.add('x-clean-back-click-feedback-visible');
+            });
+
             window.setTimeout(() => {
-                button.classList.remove('x-clean-back-click-feedback');
-            }, 180);
-            button.click();
-            window.setTimeout(() => {
+                button.click();
                 forwardingBackClick = false;
-            }, 0);
+                window.setTimeout(() => {
+                    feedback.remove();
+                }, 120);
+            }, 90);
         }, true);
     }
 
@@ -1095,10 +1104,24 @@
                 pointer-events: auto !important;
             }
 
-            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] .x-clean-back-click-feedback {
-                background-color: rgba(239, 243, 244, 0.16) !important;
+            .x-clean-back-click-feedback {
+                position: fixed !important;
+                width: 40px !important;
+                height: 40px !important;
+                margin-left: -20px !important;
+                margin-top: -20px !important;
                 border-radius: 9999px !important;
-                transition: background-color 120ms ease-out !important;
+                background-color: rgba(239, 243, 244, 0.18) !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                transform: scale(0.86) !important;
+                transition: opacity 50ms ease-out, transform 80ms ease-out !important;
+                z-index: 2147483647 !important;
+            }
+
+            .x-clean-back-click-feedback-visible {
+                opacity: 1 !important;
+                transform: scale(1) !important;
             }
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] [role="heading"] {
