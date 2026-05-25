@@ -861,6 +861,48 @@
         }, true);
     }
 
+    function installLargerPostTextSelectionFix() {
+        let activeArticle = null;
+        let clearSelectionTimer = null;
+
+        function clearActiveArticle() {
+            if (activeArticle) {
+                activeArticle.classList.remove('x-clean-active-selection-article');
+                activeArticle = null;
+            }
+
+            document.documentElement.classList.remove('x-clean-selecting-tweet-text');
+        }
+
+        document.addEventListener('mousedown', function(event) {
+            if (document.documentElement.classList.contains('x-clean-chat-page')) {
+                return;
+            }
+
+            const tweetText = event.target.closest('div[data-testid="primaryColumn"] article [data-testid="tweetText"]');
+            clearActiveArticle();
+
+            if (!tweetText) {
+                return;
+            }
+
+            activeArticle = tweetText.closest('article');
+            if (!activeArticle) {
+                return;
+            }
+
+            window.clearTimeout(clearSelectionTimer);
+            activeArticle.classList.add('x-clean-active-selection-article');
+            document.documentElement.classList.add('x-clean-selecting-tweet-text');
+        }, true);
+
+        document.addEventListener('mouseup', function() {
+            clearSelectionTimer = window.setTimeout(clearActiveArticle, 120);
+        }, true);
+
+        window.addEventListener('blur', clearActiveArticle);
+    }
+
     var cssRules = '';
 
     if (settings.hideSelectors) {
@@ -1066,6 +1108,7 @@
     const sideOffset = (baseWidth - customWidth) / 2;
 
         installLargerPostBackButtonFix();
+        installLargerPostTextSelectionFix();
 
         cssRules += `
             html:not(.x-clean-chat-page) .r-obd0qt {
@@ -1089,6 +1132,8 @@
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] > div > div:first-child {
                 position: relative !important;
                 z-index: 1000 !important;
+                user-select: none !important;
+                -webkit-user-select: none !important;
             }
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] [data-testid="app-bar-back"],
@@ -1126,6 +1171,8 @@
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] [role="heading"] {
                 pointer-events: none !important;
+                user-select: none !important;
+                -webkit-user-select: none !important;
             }
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] > div {
@@ -1134,6 +1181,40 @@
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article {
                 max-width: 100% !important;
+            }
+
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="User-Name"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="socialContext"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid^="UserAvatar-Container"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article time,
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [role="group"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article button,
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="caret"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="reply"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="retweet"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="like"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="bookmark"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="share"] {
+                user-select: none !important;
+                -webkit-user-select: none !important;
+            }
+
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"],
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"] * {
+                user-select: text !important;
+                -webkit-user-select: text !important;
+            }
+
+            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"],
+            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"] * {
+                user-select: none !important;
+                -webkit-user-select: none !important;
+            }
+
+            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article.x-clean-active-selection-article [data-testid="tweetText"],
+            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article.x-clean-active-selection-article [data-testid="tweetText"] * {
+                user-select: text !important;
+                -webkit-user-select: text !important;
             }
 
             html:not(.x-clean-chat-page) div[data-testid="sidebarColumn"] {
