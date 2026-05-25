@@ -861,48 +861,6 @@
         }, true);
     }
 
-    function installLargerPostTextSelectionFix() {
-        let activeArticle = null;
-        let clearSelectionTimer = null;
-
-        function clearActiveArticle() {
-            if (activeArticle) {
-                activeArticle.classList.remove('x-clean-active-selection-article');
-                activeArticle = null;
-            }
-
-            document.documentElement.classList.remove('x-clean-selecting-tweet-text');
-        }
-
-        document.addEventListener('mousedown', function(event) {
-            if (document.documentElement.classList.contains('x-clean-chat-page')) {
-                return;
-            }
-
-            const tweetText = event.target.closest('div[data-testid="primaryColumn"] article [data-testid="tweetText"]');
-            clearActiveArticle();
-
-            if (!tweetText) {
-                return;
-            }
-
-            activeArticle = tweetText.closest('article');
-            if (!activeArticle) {
-                return;
-            }
-
-            window.clearTimeout(clearSelectionTimer);
-            activeArticle.classList.add('x-clean-active-selection-article');
-            document.documentElement.classList.add('x-clean-selecting-tweet-text');
-        }, true);
-
-        document.addEventListener('mouseup', function() {
-            clearSelectionTimer = window.setTimeout(clearActiveArticle, 120);
-        }, true);
-
-        window.addEventListener('blur', clearActiveArticle);
-    }
-
     var cssRules = '';
 
     if (settings.hideSelectors) {
@@ -1108,7 +1066,6 @@
     const sideOffset = (baseWidth - customWidth) / 2;
 
         installLargerPostBackButtonFix();
-        installLargerPostTextSelectionFix();
 
         cssRules += `
             html:not(.x-clean-chat-page) .r-obd0qt {
@@ -1131,7 +1088,7 @@
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] > div > div:first-child {
                 position: relative !important;
-                z-index: 1000 !important;
+                z-index: 3 !important;
                 user-select: none !important;
                 -webkit-user-select: none !important;
             }
@@ -1151,16 +1108,17 @@
 
             .x-clean-back-click-feedback {
                 position: fixed !important;
-                width: 40px !important;
-                height: 40px !important;
-                margin-left: -20px !important;
-                margin-top: -20px !important;
+                width: 46px !important;
+                height: 46px !important;
+                margin-left: -23px !important;
+                margin-top: -23px !important;
                 border-radius: 9999px !important;
-                background-color: rgba(239, 243, 244, 0.18) !important;
+                background-color: rgba(29, 155, 240, 0.32) !important;
+                box-shadow: 0 0 0 8px rgba(29, 155, 240, 0.16) !important;
                 opacity: 0 !important;
                 pointer-events: none !important;
                 transform: scale(0.86) !important;
-                transition: opacity 50ms ease-out, transform 80ms ease-out !important;
+                transition: opacity 70ms ease-out, transform 90ms ease-out !important;
                 z-index: 2147483647 !important;
             }
 
@@ -1201,18 +1159,8 @@
 
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"],
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"] * {
-                user-select: text !important;
-                -webkit-user-select: text !important;
-            }
-
-            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"],
-            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"] * {
-                user-select: none !important;
-                -webkit-user-select: none !important;
-            }
-
-            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article.x-clean-active-selection-article [data-testid="tweetText"],
-            html.x-clean-selecting-tweet-text:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article.x-clean-active-selection-article [data-testid="tweetText"] * {
+                position: relative !important;
+                z-index: 4 !important;
                 user-select: text !important;
                 -webkit-user-select: text !important;
             }
