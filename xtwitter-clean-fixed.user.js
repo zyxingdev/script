@@ -1089,6 +1089,7 @@
             html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] > div > div:first-child {
                 position: relative !important;
                 z-index: 3 !important;
+                pointer-events: none !important;
                 user-select: none !important;
                 -webkit-user-select: none !important;
             }
@@ -1157,12 +1158,15 @@
                 -webkit-user-select: none !important;
             }
 
-            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"],
-            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"] * {
-                position: relative !important;
-                z-index: 4 !important;
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"] {
                 user-select: text !important;
                 -webkit-user-select: text !important;
+                -webkit-user-drag: none !important;
+            }
+
+            html:not(.x-clean-chat-page) div[data-testid="primaryColumn"] article [data-testid="tweetText"] span {
+                user-select: inherit !important;
+                -webkit-user-select: inherit !important;
             }
 
             html:not(.x-clean-chat-page) div[data-testid="sidebarColumn"] {
