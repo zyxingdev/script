@@ -1,11 +1,11 @@
 #!name =  iRingo: 🌤 WeatherKit QX Fix
-#!desc = 修复 iOS 26.6 currentAirQuality 请求 /api/v1/airQualityScale/HJ6332012.2414 返回 404 后空气质量数值无法使用的问题。
+#!desc = 修复 iOS 26.6 WeatherKit country 丢失导致空气质量无法注入的问题，并保持原仓库默认欧标空气质量等级。
 #!author = NSRingo + local fix
 #!homepage = https://github.com/NSRingo/WeatherKit/issues/65
 #!icon = https://developer.apple.com/assets/elements/icons/weatherkit/weatherkit-128x128.png
 #!category =  iRingo
-#!date = 2026-06-03 13:22:00
-#!version = 4.0.0-beta3-qx-hj6332012-expanded-scale
+#!date = 2026-06-03 14:10:00
+#!version = 4.0.0-beta3-qx-eu-eaqi
 
 #[filter_local]
 host, weather-analytics-events.apple.com, reject
@@ -17,8 +17,6 @@ host, tether.edge.apple, reject
 ^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.Country.qx.js
 # 🌤 WeatherKit.api.v1.availability.response
 ^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js
-# 🌤 WeatherKit.api.v1.airQualityScale.HJ6332012.response
-^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/[^\/]+\/HJ6332012\.2414 url script-echo-response https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.qx.js
 # 🌤 WeatherKit.api.v1.airQualityScale.request
 ^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/request.bundle.js
 # 🌤 WeatherKit.api.v2.weather.response
