@@ -44,7 +44,7 @@ if (/^EU\.EAQI\./i.test(scaleID)) {
         const [start, end] = groups[groupIndex];
         for (let value = start; value <= end; value++) {
             categories.push({
-                categoryNumber: value,
+                categoryNumber: value + 1,
                 range: [value, value],
                 color: colors[groupIndex],
                 categoryName: labels[groupIndex],
