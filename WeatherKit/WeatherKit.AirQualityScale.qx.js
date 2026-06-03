@@ -7,7 +7,77 @@ const scaleID = paths[paths.length - 1] || "HJ6332012.2414";
 const language = /zh-Hans-CN/i.test(locale) ? "zh-CN" : /^zh-Hant-HK$/i.test(locale) ? "zh-HK" : /^zh/i.test(locale) ? "zh-TW" : "en";
 const isZh = /^zh/i.test(language);
 
-if (/^EU\.EAQI\./i.test(scaleID)) {
+if (/^CN\.AQHI\./i.test(scaleID)) {
+    const labels = isZh
+        ? ["良好", "尚可", "中等", "较差", "非常差", "极差"]
+        : ["Good", "Fair", "Moderate", "Poor", "Very Poor", "Extremely Poor"];
+    const recommendations = isZh
+        ? [
+            "空气质量良好。",
+            "空气质量尚可。",
+            "敏感人群应考虑减少长时间户外活动。",
+            "敏感人群应减少户外活动。",
+            "敏感人群应避免户外活动，一般人群减少户外活动。",
+            "尽量避免户外活动。",
+        ]
+        : [
+            "Air quality is good.",
+            "Air quality is fair.",
+            "Sensitive groups should consider reducing prolonged outdoor activity.",
+            "Sensitive groups should reduce outdoor activity.",
+            "Sensitive groups should avoid outdoor activity and others should reduce it.",
+            "Avoid outdoor activity where possible.",
+        ];
+    const colors = ["#04DE71", "#A8E05F", "#FFE620", "#FF9500", "#FA114F", "#80172B"];
+    const glyphs = ["aqi.low", "aqi.low", "aqi.medium", "aqi.high", "aqi.high", "aqi.high"];
+    const categories = [];
+
+    for (let value = 1; value <= 11; value++) {
+        const labelIndex = Math.min(value, 6) - 1;
+        categories.push({
+            categoryNumber: value,
+            range: [value, value],
+            color: colors[labelIndex],
+            categoryName: labels[labelIndex],
+            recommendation: recommendations[labelIndex],
+            glyph: glyphs[labelIndex],
+        });
+    }
+
+    $done({
+        status: 200,
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "max-age=31536000, public, s-maxage=31536000",
+        },
+        body: JSON.stringify({
+            name: scaleID,
+            displayName: "EAQI (EU)",
+            shortDisplayName: "EAQI",
+            longDisplayName: isZh ? "欧盟 (EAQI)" : "European Air Quality Index",
+            displayLabel: isZh ? "空气质量" : "Air Quality",
+            language,
+            version: 1,
+            aqi: {
+                numerical: true,
+                ascending: true,
+                range: [1, 11],
+                categories,
+                gradient: {
+                    stops: [
+                        { location: 1, color: colors[0] },
+                        { location: 2, color: colors[1] },
+                        { location: 3, color: colors[2] },
+                        { location: 4, color: colors[3] },
+                        { location: 5, color: colors[4] },
+                        { location: 6, color: colors[5] },
+                        { location: 11, color: colors[5] },
+                    ],
+                },
+            },
+        }),
+    });
+} else if (/^EU\.EAQI\./i.test(scaleID)) {
     const labels = isZh
         ? ["良好", "一般", "中等", "较差", "非常差", "极差"]
         : ["Good", "Fair", "Moderate", "Poor", "Very Poor", "Extremely Poor"];
