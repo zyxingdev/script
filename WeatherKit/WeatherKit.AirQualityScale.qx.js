@@ -4,8 +4,8 @@ console.log(`WeatherKit AirQualityScale mock: ${url.pathname}`);
 const paths = url.pathname.split("/").filter(Boolean);
 const locale = paths[paths.length - 2] || "en-US";
 const scaleID = paths[paths.length - 1] || "HJ6332012.2414";
-const language = /^zh-Hant/i.test(locale) ? "zh-TW" : /^zh/i.test(locale) ? "zh-CN" : "en-US";
-const isZh = /^zh/i.test(language);
+const language = /zh-Hans-CN/i.test(locale) ? "zh-CN" : /^zh-Hant-HK$/i.test(locale) ? "zh-HK" : /^zh/i.test(locale) ? "zh-TW" : "en";
+const isZh = /^zh/i.test(language) || /-CN$/i.test(locale);
 
 const labels = isZh
     ? ["优", "良", "轻度污染", "中度污染", "重度污染", "严重污染"]
@@ -27,7 +27,7 @@ const recommendations = isZh
         "Sensitive groups should stay indoors and everyone should reduce outdoor exertion.",
         "Everyone should avoid outdoor exertion.",
     ];
-const ranges = [
+const groups = [
     [0, 50],
     [51, 100],
     [101, 150],
@@ -38,14 +38,20 @@ const ranges = [
 const colors = ["#00E400", "#FFFF00", "#FF7E00", "#FF0000", "#8F3F97", "#7E0023"];
 const glyphs = ["aqi.low", "aqi.medium", "aqi.high", "aqi.high", "aqi.high", "aqi.high"];
 
-const categories = ranges.map(([start, end], index) => ({
-    categoryNumber: index + 1,
-    range: [start, end],
-    color: colors[index],
-    glyph: glyphs[index],
-    categoryName: labels[index],
-    recommendation: recommendations[index],
-}));
+const categories = [];
+for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+    const [start, end] = groups[groupIndex];
+    for (let value = start; value <= end; value++) {
+        categories.push({
+            categoryNumber: value,
+            range: [value, value],
+            color: colors[groupIndex],
+            categoryName: labels[groupIndex],
+            recommendation: recommendations[groupIndex],
+            glyph: glyphs[groupIndex],
+        });
+    }
+}
 
 const body = {
     name: scaleID,
@@ -75,10 +81,10 @@ const body = {
 };
 
 $done({
-    status: "HTTP/1.1 200 OK",
+    status: 200,
     headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "max-age=86400",
+        "Cache-Control": "max-age=31536000, public, s-maxage=31536000",
     },
     body: JSON.stringify(body),
 });
