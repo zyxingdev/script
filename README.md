@@ -2,17 +2,10 @@
 
 个人脚本与配置片段。
 
-## WeatherKit QX 修复
-
-Quantumult X snippet:
-
-https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/iRingo.WeatherKit.QX.snippet
-
-这个 WeatherKit snippet 是基于上游 iRingo WeatherKit 项目的 Quantumult X 本地适配版本。当前修复保留上游默认的 EU EAQI 空气质量等级计算，并将结果映射到 iOS 天气 App 可显示的标尺，以恢复空气质量数值和程度描述。
-
 ## 致谢
 
 - WeatherKit QX 修复: 基于 [NSRingo/WeatherKit](https://github.com/NSRingo/WeatherKit) 的 iRingo WeatherKit 脚本进行 Quantumult X 本地适配，并参考了 [issue #65](https://github.com/NSRingo/WeatherKit/issues/65) 中提到的 iOS 26.6 WeatherKit country 丢失问题。感谢 NSRingo 和 iRingo 贡献者提供原始 WeatherKit 脚本。
+- 当前修复保留上游默认的 EU EAQI 空气质量等级计算，并将结果映射到 iOS 天气 App 可显示的标尺，以恢复空气质量数值和程度描述。
 
 - Bilibili 去广告配置: `Bilibili_remove_ads.stoverride` 引用了 [kokoryh](https://github.com/kokoryh) 开源脚本相关代码，用于处理 Bilibili 的广告、推荐位和 JSON/protobuf 响应改写逻辑。
 
