@@ -41,6 +41,7 @@ const scaleRanges = {
 
 const colors = ["#00E400", "#FFFF00", "#FF7E00", "#FF0000", "#8F3F97", "#7E0023"];
 const url = new URL($request.url);
+console.log(`WeatherKit AirQualityScale mock: ${url.pathname}`);
 const paths = url.pathname.split("/").filter(Boolean);
 const locale = paths.at(-2) || "en-US";
 const scaleID = paths.at(-1) || "HJ6332012.2414";
@@ -69,8 +70,11 @@ const body = {
     scale: `${scaleName}.${version}`,
     locale,
     localizedName: scaleName === "HJ6332012" ? "AQI (CN)" : scaleName,
+    displayName: scaleName === "HJ6332012" ? "AQI (CN)" : scaleName,
+    description: scaleName === "HJ6332012" ? "China AQI" : scaleName,
     categories,
     categoryRanges: categories,
+    airQualityCategories: categories,
 };
 
 $done({
