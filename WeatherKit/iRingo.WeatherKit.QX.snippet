@@ -18,8 +18,8 @@ host, tether.edge.apple, reject
 # 🌤 WeatherKit.api.v1.availability.response
 ^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js
 # 🌤 WeatherKit.api.v1.airQualityScale.response
-^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-response-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScaleHeader.qx.js
-^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.qx.js
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/.+\/HJ6332012\.2414 url script-response-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScaleHeader.qx.js
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/.+\/HJ6332012\.2414 url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.qx.js
 # 🌤 WeatherKit.api.v2.weather.response
 ^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js
 
