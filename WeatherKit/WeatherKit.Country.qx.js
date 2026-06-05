@@ -1,3 +1,5 @@
+// Local WeatherKit country fallback helper for Quantumult X.
+// Derived from the iRingo/WeatherKit adaptation context; see ../THIRD_PARTY_NOTICES.md.
 const url = new URL($request.url);
 const paths = url.pathname.split("/").filter(Boolean);
 const locale = paths[3] || "";

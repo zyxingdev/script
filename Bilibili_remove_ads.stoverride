@@ -1,3 +1,6 @@
+# Third-party attribution:
+# Based on/uses kokoryh Bilibili rules and remote scripts.
+# See THIRD_PARTY_NOTICES.md before redistributing.
 name: |-
   哔哩哔哩去广告
 desc: |-

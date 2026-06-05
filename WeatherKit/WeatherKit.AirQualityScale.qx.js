@@ -1,3 +1,5 @@
+// Local WeatherKit air-quality scale helper for Quantumult X.
+// Derived from the iRingo/WeatherKit adaptation context; see ../THIRD_PARTY_NOTICES.md.
 const url = new URL($request.url);
 console.log(`WeatherKit AirQualityScale mock: ${url.pathname}`);
 
