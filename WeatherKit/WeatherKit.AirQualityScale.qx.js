@@ -1,5 +1,13 @@
-// Local WeatherKit air-quality scale helper for Quantumult X.
+// Local WeatherKit air-quality scale helper for Quantumult X and Stash.
 // Derived from the iRingo/WeatherKit adaptation context; see ../THIRD_PARTY_NOTICES.md.
+function done(response) {
+    if (globalThis.$environment?.["stash-version"]) {
+        $done({ response });
+    } else {
+        $done(response);
+    }
+}
+
 const url = new URL($request.url);
 console.log(`WeatherKit AirQualityScale mock: ${url.pathname}`);
 
@@ -46,7 +54,7 @@ if (/^CN\.AQHI\./i.test(scaleID)) {
         });
     }
 
-    $done({
+    done({
         status: 200,
         headers: {
             "Content-Type": "application/json",
@@ -126,7 +134,7 @@ if (/^CN\.AQHI\./i.test(scaleID)) {
         }
     }
 
-    $done({
+    done({
         status: 200,
         headers: {
             "Content-Type": "application/json",
@@ -233,7 +241,7 @@ const body = {
     },
 };
 
-$done({
+done({
     status: 200,
     headers: {
         "Content-Type": "application/json",
