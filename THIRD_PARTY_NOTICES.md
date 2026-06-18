@@ -12,7 +12,7 @@ This repository contains personal scripts and local adaptations. It is not a sin
   - `WeatherKit/request.bundle.js`
   - `WeatherKit/response.bundle.js`
   - `WeatherKit/WeatherKit.Country.qx.js`
-  - `WeatherKit/WeatherKit.AirQualityScale.qx.js`
+  - `WeatherKit/WeatherKit.AirQualityScale.js`
 - Local modifications:
   - Quantumult X raw URL adaptation.
   - WeatherKit country fallback for affected iOS 26.6 requests.
