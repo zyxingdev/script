@@ -199,20 +199,15 @@ const groups = [
 const colors = ["#00E400", "#FFFF00", "#FF7E00", "#FF0000", "#8F3F97", "#7E0023"];
 const glyphs = ["aqi.low", "aqi.medium", "aqi.high", "aqi.high", "aqi.high", "aqi.high"];
 
-const categories = [];
-for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-    const [start, end] = groups[groupIndex];
-    for (let value = start; value <= end; value++) {
-        categories.push({
-            categoryNumber: value,
-            range: [value, value],
-            color: colors[groupIndex],
-            categoryName: labels[groupIndex],
-            recommendation: recommendations[groupIndex],
-            glyph: glyphs[groupIndex],
-        });
-    }
-}
+// WeatherKit matches categoryNumber against categoryIndex (1-6), not the AQI value.
+const categories = groups.map(([start, end], groupIndex) => ({
+    categoryNumber: groupIndex + 1,
+    range: [start, end],
+    color: colors[groupIndex],
+    categoryName: labels[groupIndex],
+    recommendation: recommendations[groupIndex],
+    glyph: glyphs[groupIndex],
+}));
 
 const body = {
     name: scaleID,
@@ -245,7 +240,7 @@ done({
     status: 200,
     headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "max-age=31536000, public, s-maxage=31536000",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
     },
     body: JSON.stringify(body),
 });
