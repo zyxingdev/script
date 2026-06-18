@@ -15,7 +15,7 @@ homepage: "https://NSRingo.github.io/guide/Weather/weather-kit"
 icon: "https://developer.apple.com/assets/elements/icons/weatherkit/weatherkit-128x128.png"
 category: " iRingo"
 date: "2026-06-18 00:00:00"
-version: "4.0.0-beta3-stash-fix2"
+version: "4.0.0-beta3-stash-fix3"
 
 rules:
   - DOMAIN,weather-analytics-events.apple.com,REJECT-DROP
@@ -48,6 +48,9 @@ http:
       require-body: true
       binary-mode: true
       argument:
+        Storage: Argument
+        AirQuality.Calculate.Algorithm: WAQI_InstantCast_CN
+        AirQuality.Comparison.Yesterday.IndexProvider: Calculate
 
 script-providers:
   WeatherKit.api.v2.weather.request:
