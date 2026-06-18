@@ -15,7 +15,7 @@ homepage: "https://NSRingo.github.io/guide/Weather/weather-kit"
 icon: "https://developer.apple.com/assets/elements/icons/weatherkit/weatherkit-128x128.png"
 category: " iRingo"
 date: "2026-06-18 00:00:00"
-version: "4.0.0-beta3-stash-fix6"
+version: "4.0.0-beta3-stash-fix7"
 
 rules:
   - DOMAIN,weather-analytics-events.apple.com,REJECT-DROP
@@ -54,11 +54,11 @@ script-providers:
     url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/request.bundle.js
     interval: 86400
   WeatherKit.api.v1.availability.response:
-    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js
+    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=fix7
     interval: 86400
   WeatherKit.api.v1.airQualityScale.request:
-    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.js
+    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.js?version=fix7
     interval: 86400
   WeatherKit.api.v2.weather.response:
-    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js
+    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=fix7
     interval: 86400
