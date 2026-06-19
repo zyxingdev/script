@@ -4,7 +4,10 @@ function done(response) {
     if (globalThis.$environment?.["stash-version"]) {
         $done({ response });
     } else {
-        $done(response);
+        $done({
+            ...response,
+            status: response.status === 200 ? "HTTP/1.1 200 OK" : response.status,
+        });
     }
 }
 
