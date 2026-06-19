@@ -5,7 +5,7 @@
 #!icon = https://developer.apple.com/assets/elements/icons/weatherkit/weatherkit-128x128.png
 #!category =  iRingo
 #!date = 2026-06-19 00:00:00
-#!version = 4.0.0-beta3-qx-stash-parity1
+#!version = 4.0.0-beta3-qx-stability1
 #!license = Apache-2.0 upstream; see ../THIRD_PARTY_NOTICES.md
 
 #[filter_local]
@@ -17,11 +17,11 @@ host, tether.edge.apple, reject
 # 🌤 WeatherKit.api.v2.weather.request
 ^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.Country.qx.js
 # 🌤 WeatherKit.api.v1.availability.response
-^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=parity1
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=stability1
 # 🌤 WeatherKit.api.v1.airQualityScale.request
-^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.js?version=parity1
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.js?version=stability1
 # 🌤 WeatherKit.api.v2.weather.response
-^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?Storage=Argument&AirQuality.Calculate.Algorithm=WAQI_InstantCast_CN&AirQuality.Comparison.Yesterday.IndexProvider=Calculate
+^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=stability1
 
 #[mitm]
 hostname = weatherkit.apple.com
