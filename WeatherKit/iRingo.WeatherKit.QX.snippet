@@ -1,11 +1,11 @@
 #!name =  iRingo: 🌤 WeatherKit QX Fix
-#!desc = 修复 iOS 26.6 WeatherKit country 丢失导致空气质量无法注入的问题，并保持原仓库默认欧标空气质量等级。
+#!desc = 修复 WeatherKit country 丢失和空气质量显示问题，并与 Stash 统一使用中国 AQI（HJ 633—2012）数据与等级。
 #!author = NSRingo + local fix
 #!homepage = https://github.com/NSRingo/WeatherKit/issues/65
 #!icon = https://developer.apple.com/assets/elements/icons/weatherkit/weatherkit-128x128.png
 #!category =  iRingo
-#!date = 2026-06-03 18:20:00
-#!version = 4.0.0-beta3-qx-shared-aqi-scale
+#!date = 2026-06-19 00:00:00
+#!version = 4.0.0-beta3-qx-stash-parity1
 #!license = Apache-2.0 upstream; see ../THIRD_PARTY_NOTICES.md
 
 #[filter_local]
@@ -17,11 +17,11 @@ host, tether.edge.apple, reject
 # 🌤 WeatherKit.api.v2.weather.request
 ^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.Country.qx.js
 # 🌤 WeatherKit.api.v1.availability.response
-^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=parity1
 # 🌤 WeatherKit.api.v1.airQualityScale.request
-^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.js
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.js?version=parity1
 # 🌤 WeatherKit.api.v2.weather.response
-^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js
+^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?Storage=Argument&AirQuality.Calculate.Algorithm=WAQI_InstantCast_CN&AirQuality.Comparison.Yesterday.IndexProvider=Calculate
 
 #[mitm]
 hostname = weatherkit.apple.com

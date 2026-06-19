@@ -10,7 +10,7 @@
 ## WeatherKit
 
 - [iRingo.WeatherKit.stoverride](WeatherKit/iRingo.WeatherKit.stoverride): Stash 覆写，包含 WeatherKit 请求与响应处理、空气质量标尺以及国标 AQI 配置。
-- [iRingo.WeatherKit.QX.snippet](WeatherKit/iRingo.WeatherKit.QX.snippet): Quantumult X 重写片段。
+- [iRingo.WeatherKit.QX.snippet](WeatherKit/iRingo.WeatherKit.QX.snippet): Quantumult X 重写片段，空气质量数据源、国标算法和昨日对比逻辑与 Stash 版本保持一致。
 - [WeatherKit.AirQualityScale.js](WeatherKit/WeatherKit.AirQualityScale.js): Quantumult X 与 Stash 共用的空气质量标尺响应脚本，提供颜色、图标和本地化等级描述。
 - [WeatherKit.Country.qx.js](WeatherKit/WeatherKit.Country.qx.js): 为缺少 `country` 参数的 WeatherKit 请求补充地区信息。
 - `request.bundle.js` / `response.bundle.js`: 基于上游 beta3 的请求与二进制响应处理脚本，由上述配置自动引用。
