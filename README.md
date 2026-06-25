@@ -4,7 +4,6 @@
 
 ## 内容
 
-- `Bilibili_remove_ads.stoverride`: 哔哩哔哩去广告相关 Loon/Stash Override 配置，引用 kokoryh 的远程处理脚本。
 - `WeatherKit/`: 基于 NSRingo/WeatherKit 的 Quantumult X 本地适配，修复 country 参数丢失、空气质量图标和中文等级描述等问题，并统一使用中国 AQI（HJ 633—2012）标准。
 - `jd-invoice-grouper.user.js`: 京东“我的发票”Tampermonkey 脚本，按销售方和发票号码归类凑单。
 
@@ -32,7 +31,6 @@ Quantumult X 可订阅 [iRingo.WeatherKit.QX.snippet](https://raw.githubusercont
 本仓库包含第三方脚本的派生版本、配置引用和本地适配代码。第三方来源、已确认许可证和未确认许可证的部分记录在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 - iRingo / NSRingo WeatherKit: 上游项目为 Apache-2.0 license，本仓库保留来源说明并记录本地修改。
-- kokoryh Bilibili 脚本: 配置中保留原作者信息和远程脚本 URL；未在本次检查中确认到明确许可证，因此不将其声明为本仓库原创或重新授权内容。
 
 本仓库中由 zyxingdev 新增的说明文字和本地适配改动，在不覆盖第三方材料原有权利的前提下，按 Apache-2.0 许可提供。第三方材料继续遵循其各自上游许可证或授权状态。
 
