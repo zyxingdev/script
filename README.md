@@ -4,18 +4,19 @@
 
 ## 内容
 
-- `WeatherKit/`: 基于 NSRingo/WeatherKit 的 Quantumult X 本地适配，修复 country 参数丢失、空气质量图标和中文等级描述等问题，并统一使用中国 AQI（HJ 633—2012）标准。
+- `WeatherKit/`: 基于 NSRingo/WeatherKit 的 Quantumult X 与 Stash 本地适配，修复 country 参数丢失、空气质量图标和中文等级描述等问题，并统一使用中国 AQI（HJ 633—2012）标准。
 
 ## WeatherKit
 
 - [iRingo.WeatherKit.QX.snippet](WeatherKit/iRingo.WeatherKit.QX.snippet): Quantumult X 重写片段，包含空气质量数据源、国标算法和昨日对比逻辑。
-- [WeatherKit.AirQualityScale.js](WeatherKit/WeatherKit.AirQualityScale.js): Quantumult X 使用的空气质量标尺响应脚本，提供颜色、图标和本地化等级描述。
+- [iRingo.WeatherKit.stoverride](WeatherKit/iRingo.WeatherKit.stoverride): Stash 覆写配置，引用同一套 WeatherKit 脚本并启用中国 AQI 标尺。
+- [WeatherKit.AirQualityScale.js](WeatherKit/WeatherKit.AirQualityScale.js): Quantumult X 与 Stash 共用的空气质量标尺响应脚本，提供颜色、图标和本地化等级描述。
 - [WeatherKit.Country.qx.js](WeatherKit/WeatherKit.Country.qx.js): 为缺少 `country` 参数的 WeatherKit 请求补充地区信息。
 - `request.bundle.js` / `response.bundle.js`: 基于上游 beta3 的请求与二进制响应处理脚本，由上述配置自动引用。
 
 ## 安装
 
-Quantumult X 可订阅 [iRingo.WeatherKit.QX.snippet](https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/iRingo.WeatherKit.QX.snippet)。更新配置后请确认已启用 Rewrite、Script 和 MitM；若天气 App 仍使用旧标尺，请清理其缓存并重新打开。
+Quantumult X 可订阅 [iRingo.WeatherKit.QX.snippet](https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/iRingo.WeatherKit.QX.snippet)。Stash 可订阅 [iRingo.WeatherKit.stoverride](https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/iRingo.WeatherKit.stoverride)。更新配置后请确认已启用 Rewrite、Script 和 MitM；若天气 App 仍使用旧标尺，请清理其缓存并重新打开。
 
 ## 第三方来源与许可证
 
