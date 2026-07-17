@@ -5,6 +5,11 @@
 ## 内容
 
 - `WeatherKit/`: 基于 NSRingo/WeatherKit 的 Quantumult X 与 Stash 本地适配，修复 country 参数丢失、空气质量图标和中文等级描述等问题，并统一使用中国 AQI（HJ 633—2012）标准。
+- `JD/`: Quantumult X 京东去广告重写，屏蔽启动页广告、DNS 配置与直播入口。
+
+## 京东去广告
+
+Quantumult X 可订阅 [JD_remove_ads.QX.snippet](https://raw.githubusercontent.com/zyxingdev/script/main/JD/JD_remove_ads.QX.snippet)。启用 Rewrite 与 MitM 后重新打开京东 App；店铺页直播规则会同时移除活动弹窗、关注按钮和直播观看入口。
 
 ## WeatherKit
 
