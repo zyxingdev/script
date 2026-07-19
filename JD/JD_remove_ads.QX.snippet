@@ -1,23 +1,19 @@
-#!name = 京东去广告（Quantumult X）
-#!desc = 屏蔽京东启动页广告、DNS 配置和直播入口；清空服务端下发的 dnsvip。
+#!name = 京东 iOS 开屏去广告（Quantumult X）
+#!desc = 清理京东启动接口下发的开屏广告，并拦截启动广告图片。
 #!author = zyxingdev
 #!homepage = https://github.com/zyxingdev/script
-#!date = 2026-07-17 00:00:00
-#!version = 1.0.0
+#!date = 2026-07-19 00:00:00
+#!version = 2.0.0
 
 #[rewrite_local]
-# 京东启动页广告
-^https?:\/\/m\.360buyimg\.com\/mobilecms\/s1125x2436_jfs url reject-200
+# 京东主开屏接口：保留响应结构并使广告失效
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]+&)*functionId=start(?:&|$) url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/JD/JD_remove_ads.qx.js
 
-# 禁用京东自有 DNS 解析
-^https?:\/\/dns\.jd\.com\/ url reject
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(?:server|basic)Config(?:&|$) url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/JD/JD_remove_ads.qx.js
+# 京东新版启动配置接口：返回空字典
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]+&)*functionId=home_launchConfig(?:&|$) url reject-dict
 
-# 禁用京东直播小窗
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=getWidgetV1052(?:&|$) url reject
-
-# 禁用京东店铺页直播；会同时移除活动弹窗、关注按钮和直播观看入口
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(?:live|getShopHomeExtendInfo|getImmediatePlayV910)(?:&|$) url reject
+# 京东启动广告素材兜底
+^https?:\/\/img\d+\.360buyimg\.com\/jddjadvertise\/ url reject
 
 #[mitm]
-hostname = %APPEND% m.360buyimg.com, dns.jd.com, api.m.jd.com
+hostname = %APPEND% api.m.jd.com, img*.360buyimg.com
