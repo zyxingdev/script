@@ -1,9 +1,9 @@
 #!name = 京东 iOS 开屏去广告（Quantumult X）
-#!desc = 清理京东启动接口下发的开屏广告，并拦截启动广告图片。
+#!desc = 清理京东启动接口下发的开屏广告，并拦截广告投放接口与素材。
 #!author = zyxingdev
 #!homepage = https://github.com/zyxingdev/script
-#!date = 2026-07-19 00:00:00
-#!version = 2.0.0
+#!date = 2026-07-21 00:00:00
+#!version = 2.1.0
 
 #[rewrite_local]
 # 京东主开屏接口：保留响应结构并使广告失效
@@ -12,8 +12,14 @@
 # 京东新版启动配置接口：返回空字典
 ^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]+&)*functionId=home_launchConfig(?:&|$) url reject-dict
 
+# 京东广告素材配置接口
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]+&)*functionId=queryMaterialAdverts(?:&|$) url reject-dict
+
+# 京东广告投放接口
+^https?:\/\/(?:bdsp-x|dsp-x)\.jd\.com\/adx\/ url reject-dict
+
 # 京东启动广告素材兜底
 ^https?:\/\/img\d+\.360buyimg\.com\/jddjadvertise\/ url reject
 
 #[mitm]
-hostname = %APPEND% api.m.jd.com, img*.360buyimg.com
+hostname = %APPEND% api.m.jd.com, bdsp-x.jd.com, dsp-x.jd.com, img*.360buyimg.com
