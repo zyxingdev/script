@@ -5,15 +5,7 @@
 #!icon = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/JD.png
 #!date = 2026-02-12
 
-[filter_local]
-# 拦截已知的广告域名
-host, dns.jd.com, reject
-host, ads-img-x.jd.com, reject
-host, ads-video-x.jd.com, reject
-
-[rewrite_local]
 # 针对开屏广告接口的重写
 ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(start|getSplash) url reject-dict
 
-[mitm]
 hostname = api.m.jd.com
