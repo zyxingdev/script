@@ -6,6 +6,6 @@
 #!date = 2026-02-12
 
 # 针对开屏广告接口的重写
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(start|getSplash) url reject-dict
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]+&)*functionId=(start|getSplash|home_launchConfig)(?:&|$) url reject-dict
 
 hostname = api.m.jd.com
