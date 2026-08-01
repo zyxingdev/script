@@ -6,6 +6,7 @@
 
 - `WeatherKit/`: 基于 NSRingo/WeatherKit 的 Quantumult X 与 Stash 本地适配，修复 country 参数丢失、空气质量图标和中文等级描述等问题，并统一使用中国 AQI（HJ 633—2012）标准。
 - `JD/`: Quantumult X 京东 iOS 开屏去广告重写。
+- `Stash/`: Stash 覆写配置，包括兼顾 Bilibili 去广告与历史记录加载速度的本地优化版。
 
 ## 京东去广告
 
@@ -19,6 +20,17 @@ Quantumult X 可订阅 [JD_remove_ads.QX.snippet](https://raw.githubusercontent.
 - [WeatherKit.Country.qx.js](WeatherKit/WeatherKit.Country.qx.js): 为缺少 `country` 参数的 WeatherKit 请求补充地区信息。
 - `request.bundle.js` / `response.bundle.js`: 基于上游 beta3 的请求与二进制响应处理脚本，由上述配置自动引用。
 
+## Bilibili 去广告（Stash）
+
+- [Bilibili_remove_ads.stoverride](Stash/Bilibili_remove_ads.stoverride): 保留 `app.bilibili.com` 去广告处理，同时让 `grpc.biliapi.net` 直连，以避免历史记录加载缓慢。
+- [安装和修改说明](Stash/README.md)
+
+Stash 可订阅：
+
+```text
+https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Bilibili_remove_ads.stoverride
+```
+
 ## 安装
 
 Quantumult X 可订阅 [iRingo.WeatherKit.QX.snippet](https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/iRingo.WeatherKit.QX.snippet)。Stash 可订阅 [iRingo.WeatherKit.stoverride](https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/iRingo.WeatherKit.stoverride)。更新配置后请确认已启用 Rewrite、Script 和 MitM；若天气 App 仍使用旧标尺，请清理其缓存并重新打开。
@@ -28,6 +40,7 @@ Quantumult X 可订阅 [iRingo.WeatherKit.QX.snippet](https://raw.githubusercont
 本仓库包含第三方脚本的派生版本、配置引用和本地适配代码。第三方来源、已确认许可证和未确认许可证的部分记录在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 - iRingo / NSRingo WeatherKit: 上游项目为 Apache-2.0 license，本仓库保留来源说明并记录本地修改。
+- Bilibili 去广告覆写：基于 kokoryh 规则与 Kelee/Script Hub 转换结果的本地调整，保留原作者及远程脚本来源说明；上游许可证状态见第三方声明。
 
 本仓库中由 zyxingdev 新增的说明文字和本地适配改动，在不覆盖第三方材料原有权利的前提下，按 Apache-2.0 许可提供。第三方材料继续遵循其各自上游许可证或授权状态。
 
