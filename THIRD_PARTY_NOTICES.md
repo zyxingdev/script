@@ -31,7 +31,8 @@ This repository contains personal scripts and local adaptations. It is not a sin
 - Local file:
   - `Stash/Bilibili_remove_ads.stoverride`
 - Local modifications:
-  - Removed the generated auto-subscription marker.
+  - Replaced the generated upstream subscription marker with this repository's raw update URL.
+  - Set the Stash override category to `去广告`.
   - Removed broad `biliapi.com` and `biliapi.net` reject rules.
   - Left `grpc.biliapi.net` outside the MitM hostname list to avoid slow History gRPC loading.
   - Kept `app.bilibili.com` MitM processing for JSON ad filtering and the gRPC fallback path.

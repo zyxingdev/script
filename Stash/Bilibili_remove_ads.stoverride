@@ -1,4 +1,4 @@
-# 本地优化版：保留去广告能力，并让 History gRPC 绕过整域 MitM。
+#SUBSCRIBED https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Bilibili_remove_ads.stoverride
 name: |-
   哔哩哔哩去广告
 desc: |-
@@ -9,8 +9,7 @@ icon: |-
   https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Bilibili.png
 openUrl: |-
   https://apps.apple.com/app/id736536022
-tag: |-
-  去广告
+category: "去广告"
 system: |-
   iOS, iPadOS
 system_version: |-
