@@ -11,6 +11,7 @@
 │   └── WeatherKit/         # WeatherKit QX 配置及专用脚本
 ├── Stash/
 │   ├── Bilibili/           # Bilibili 去广告覆写及说明
+│   ├── Google/             # Google 搜索与地图重定向
 │   └── WeatherKit/         # WeatherKit Stash 覆写
 ├── Scripts/
 │   └── WeatherKit/         # 多客户端共用的 WeatherKit 脚本
@@ -54,6 +55,16 @@ https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Bilibili/Bilibili_
 ```
 
 该版本保留 `app.bilibili.com` 去广告处理，同时让 `grpc.biliapi.net` 直连，以避免历史记录加载缓慢。
+
+### Google 搜索重定向
+
+- 覆写：[Google.stoverride](Stash/Google/Google.stoverride)
+- 说明：[Stash/Google/README.md](Stash/Google/README.md)
+- 订阅地址：
+
+```text
+https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Google/Google.stoverride
+```
 
 ### WeatherKit
 

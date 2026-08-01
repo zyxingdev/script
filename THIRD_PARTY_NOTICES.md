@@ -39,3 +39,15 @@ This repository contains personal scripts and local adaptations. It is not a sin
   - Kept `app.bilibili.com` MitM processing for JSON ad filtering and the gRPC fallback path.
   - Removed the hard-coded `account/mine` response rewrite.
 - License status: no upstream license was independently confirmed for the converted override and the Kelee-hosted Bilibili scripts. Attribution and source URLs are retained; downstream users should verify redistribution terms before broader distribution.
+
+## Google Redirect for Stash
+
+- Original rule/resource entry: https://hub.kelee.one
+- Author attribution retained from the converted override: 可莉🅥 (https://github.com/luestr/ProxyResource/blob/main/README.md)
+- Local file:
+  - `Stash/Google/Google.stoverride`
+- Local modifications:
+  - Replaced the Script Hub conversion URL with this repository's raw update URL.
+  - Removed conversion-only metadata fields (`tag`, `loon_version`, and `date`).
+  - Kept the original MitM hostname and redirect behavior unchanged.
+- License status: no upstream license was independently confirmed. Attribution and source URLs are retained; downstream users should verify redistribution terms before broader distribution.
