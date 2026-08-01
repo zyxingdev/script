@@ -10,16 +10,8 @@ icon: |-
 openUrl: |-
   https://apps.apple.com/app/id736536022
 category: "去广告"
-system: |-
-  iOS, iPadOS
-system_version: |-
-  15
-loon_version: |-
-  3.4.0(962)
 homepage: |-
   https://hub.kelee.one
-date: |-
-  2026-07-23 03:45:56
 
 rules:
   # 取消整域拒绝，避免 B 站客户端失败后重试或切换线路。

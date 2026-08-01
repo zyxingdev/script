@@ -16,6 +16,7 @@ https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Bilibili/Bilibili_
 
 - 将自动更新地址改为本仓库 Raw 链接，避免上游刷新覆盖本地优化。
 - 分类字段按 Stash 覆写格式设为 `去广告`。
+- 移除 Loon 转换遗留的 `system`、`system_version`、`loon_version` 和生成日期字段。
 - 取消对 `api.biliapi.com`、`app.biliapi.com`、`api.biliapi.net` 和 `app.biliapi.net` 的整域拒绝。
 - `grpc.biliapi.net` 保持直连，避免 History gRPC 被整域 MitM 拖慢。
 - 保留 `app.bilibili.com` MitM，用于首页 JSON 去广告及 gRPC 备用通道处理。
