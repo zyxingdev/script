@@ -1,0 +1,27 @@
+#!name =  iRingo: 🌤 WeatherKit QX Fix
+#!desc = 修复 WeatherKit country 丢失和空气质量显示问题，并与 Stash 统一使用中国 AQI（HJ 633—2012）数据与等级。
+#!author = NSRingo + local fix
+#!homepage = https://github.com/NSRingo/WeatherKit/issues/65
+#!icon = https://developer.apple.com/assets/elements/icons/weatherkit/weatherkit-128x128.png
+#!category =  iRingo
+#!date = 2026-06-19 00:00:00
+#!version = 4.0.0-beta3-qx-stability2
+#!license = Apache-2.0 upstream; see ../../THIRD_PARTY_NOTICES.md
+
+#[filter_local]
+host, weather-analytics-events.apple.com, reject
+host-suffix, tthr.apple.com, reject
+host, tether.edge.apple, reject
+
+#[rewrite_local]
+# 🌤 WeatherKit.api.v2.weather.request
+^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/QuantumultX/WeatherKit/WeatherKit.Country.qx.js
+# 🌤 WeatherKit.api.v1.availability.response
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/availability\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/WeatherKit/response.bundle.js?version=stability1
+# 🌤 WeatherKit.api.v1.airQualityScale.request
+^https?:\/\/weatherkit\.apple\.com\/api\/v1\/airQualityScale\/ url script-request-header https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/WeatherKit/WeatherKit.AirQualityScale.js?version=scale-status1
+# 🌤 WeatherKit.api.v2.weather.response
+^https?:\/\/weatherkit\.apple\.com\/api\/v2\/weather\/ url script-response-body https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/WeatherKit/response.bundle.js?version=stability1
+
+#[mitm]
+hostname = weatherkit.apple.com

@@ -1,4 +1,4 @@
-#SUBSCRIBED https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/iRingo.WeatherKit.stoverride
+#SUBSCRIBED https://raw.githubusercontent.com/zyxingdev/script/main/Stash/WeatherKit/iRingo.WeatherKit.stoverride
 name: " iRingo: 🌤 WeatherKit"
 desc: |-
   iOS 18 & macOS 15 & watchOS 11
@@ -51,14 +51,14 @@ http:
 
 script-providers:
   WeatherKit.api.v2.weather.request:
-    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/request.bundle.js?version=stability1
+    url: https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/WeatherKit/request.bundle.js?version=stability1
     interval: 86400
   WeatherKit.api.v1.availability.response:
-    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=stability1
+    url: https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/WeatherKit/response.bundle.js?version=stability1
     interval: 86400
   WeatherKit.api.v1.airQualityScale.request:
-    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/WeatherKit.AirQualityScale.js?version=scale-status1
+    url: https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/WeatherKit/WeatherKit.AirQualityScale.js?version=scale-status1
     interval: 86400
   WeatherKit.api.v2.weather.response:
-    url: https://raw.githubusercontent.com/zyxingdev/script/main/WeatherKit/response.bundle.js?version=stability1
+    url: https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/WeatherKit/response.bundle.js?version=stability1
     interval: 86400

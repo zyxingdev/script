@@ -8,11 +8,12 @@ This repository contains personal scripts and local adaptations. It is not a sin
 - Documentation: https://nsringo.github.io/guide/Weather/weather-kit.html
 - License observed during review: Apache-2.0 for the NSRingo/iRingo repository.
 - Local files:
-  - `WeatherKit/iRingo.WeatherKit.QX.snippet`
-  - `WeatherKit/request.bundle.js`
-  - `WeatherKit/response.bundle.js`
-  - `WeatherKit/WeatherKit.Country.qx.js`
-  - `WeatherKit/WeatherKit.AirQualityScale.js`
+  - `QuantumultX/WeatherKit/iRingo.WeatherKit.QX.snippet`
+  - `QuantumultX/WeatherKit/WeatherKit.Country.qx.js`
+  - `Stash/WeatherKit/iRingo.WeatherKit.stoverride`
+  - `Scripts/WeatherKit/request.bundle.js`
+  - `Scripts/WeatherKit/response.bundle.js`
+  - `Scripts/WeatherKit/WeatherKit.AirQualityScale.js`
 - Local modifications:
   - Quantumult X raw URL adaptation.
   - WeatherKit country fallback for affected iOS 26.6 requests.
@@ -29,7 +30,7 @@ This repository contains personal scripts and local adaptations. It is not a sin
   - https://kelee.one/Resource/JavaScript/Bilibili/Bilibili_proto_response_kokoryh.js
   - https://kelee.one/Resource/JavaScript/Bilibili/Bilibili_json_kokoryh.js
 - Local file:
-  - `Stash/Bilibili_remove_ads.stoverride`
+  - `Stash/Bilibili/Bilibili_remove_ads.stoverride`
 - Local modifications:
   - Replaced the generated upstream subscription marker with this repository's raw update URL.
   - Set the Stash override category to `去广告`.
