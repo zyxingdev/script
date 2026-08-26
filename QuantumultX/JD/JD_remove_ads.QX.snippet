@@ -1,20 +1,32 @@
-#!name = 京东去开屏广告
-#!desc = 适配京东 App V15.9.50，移除启动开屏广告及已知开屏素材请求。
-#!author = zyxing
-#!homepage = https://gist.github.com/luoxixi279-dotcom/50a997bf6524df7c8499b84fd519e6d4
-#!icon = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/JD.png
-#!date = 2026-08-04
+#!name=京东APP去广告
+#!desc=移除京东APP开屏广告、首页推荐广告、金融广告等
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/JD.png
+#!homepage=https://github.com
+#!author=zyxing
+#!version=1.0.1
+#!date=2026-08-26
 
-# 京东商城开屏接口。
-# functionId 不一定是第一个参数；[^&]* 也兼容参数顺序变化和空参数。
-^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]*&)*functionId=(?:start|getSplash|home_launchConfig)(?:&|$) url reject-dict
+[MITM]
+hostname = api.m.jd.com, ms.jr.jd.com, bdsp-x.jd.com, dsp-x.jd.com, img-ys011.didistatic.com
 
-# 京东广告投放接口，只拦截明确的广告路径。
-^https?:\/\/(?:bdsp-x|dsp-x)\.jd\.com\/adx\/.* url reject-200
-^https?:\/\/ads-img-x\.jd\.com\/.* url reject-img
-^https?:\/\/ads-video-x\.jd\.com\/.* url reject-200
+[URL Rewrite]
+# 京东开屏广告
+^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ url reject-200
 
-# 部分版本会直接请求此类启动图地址。
-^https?:\/\/m\.360buyimg\.com\/mobilecms\/s1125x2436_jfs\/.* url reject-img
+# 京东首页广告
+^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=queryMaterialAdverts$ url reject-200
 
-hostname = api.m.jd.com, bdsp-x.jd.com, dsp-x.jd.com, ads-img-x.jd.com, ads-video-x.jd.com, m.360buyimg.com
+# 京东楼层广告
+^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=deliverLayer$ url reject-200
+
+# 京东广告平台
+^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ url reject-200
+
+# 京东金融启屏广告
+^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/aladdin\/(new)?na\/m\/getLoadingPicture url reject-200
+
+# 京东分期广告
+^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/base\/na\/m\/adInfo url reject-200
+
+# 屏蔽通用广告图片
+^https?:\/\/img-ys011\.didistatic\.com\/static url reject-200
