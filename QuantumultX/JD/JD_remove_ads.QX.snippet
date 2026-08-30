@@ -1,24 +1,29 @@
 #!name=京东APP去广告
-#!desc=移除京东APP开屏广告、首页推荐广告、金融广告等
+#!desc=适配京东 App V15.10.50，移除开屏广告及部分应用内广告
 #!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/JD.png
 #!homepage=https://github.com
 #!author=zyxing
-#!version=1.0.1
-#!date=2026-08-26
+#!version=1.1.0
+#!date=2026-08-30
 
-hostname = api.m.jd.com, ms.jr.jd.com, bdsp-x.jd.com, dsp-x.jd.com
+hostname = api.m.jd.com, ms.jr.jd.com, bdsp-x.jd.com, dsp-x.jd.com, ads-img-x.jd.com, ads-video-x.jd.com
 
-# 京东开屏广告
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ url reject-200
+# 京东商城开屏配置。
+# functionId 可能不在首个参数；结尾约束只针对该参数，避免因后续参数导致规则失配。
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]*&)*functionId=(?:start|getSplash|home_launchConfig)(?:&|$) url reject-dict
 
 # 京东首页广告
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=queryMaterialAdverts$ url reject-200
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]*&)*functionId=queryMaterialAdverts(?:&|$) url reject-dict
 
 # 京东楼层广告
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=deliverLayer$ url reject-200
+^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]*&)*functionId=deliverLayer(?:&|$) url reject-dict
 
 # 京东广告平台
 ^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ url reject-200
+
+# 京东广告素材专用域名
+^https?:\/\/ads-img-x\.jd\.com\/ url reject-img
+^https?:\/\/ads-video-x\.jd\.com\/ url reject-200
 
 # 京东金融启屏广告
 ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/aladdin\/(new)?na\/m\/getLoadingPicture url reject-200
