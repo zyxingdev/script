@@ -1,16 +1,27 @@
 #!name=京东APP去广告
-#!desc=适配京东 App V15.10.50，移除开屏广告及部分应用内广告
+#!desc=清理京东开屏响应，保留部分应用内广告过滤；需开启 Rewrite 与 MitM，实际效果需实机验证
 #!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/JD.png
-#!homepage=https://github.com
+#!homepage=https://github.com/zyxingdev/script
 #!author=zyxing
-#!version=1.1.0
-#!date=2026-08-30
+#!version=1.2.0
+#!date=2026-09-04
 
 hostname = api.m.jd.com, ms.jr.jd.com, bdsp-x.jd.com, dsp-x.jd.com, ads-img-x.jd.com, ads-video-x.jd.com
 
-# 京东商城开屏配置。
-# functionId 可能不在首个参数；结尾约束只针对该参数，避免因后续参数导致规则失配。
-^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]*&)*functionId=(?:start|getSplash|home_launchConfig)(?:&|$) url reject-dict
+# 京东商城开屏：保留启动响应其他字段，只清理已知开屏字段。
+# 同时匹配 /client.action 和 /，允许 functionId 位于任意查询参数位置。
+# images / showTimesDaily 字段参考（接口资料，非实机兼容性保证）：
+# https://gist.github.com/blackmatrix7/281d382cf84d0ada343f56244e8dcd3c
+# 只处理带 images 数组的对象；未知结构保持原样，避免破坏启动配置。
+^https?:\/\/api\.m\.jd\.com\/(?:client\.action)?\?(?:[^&]*&)*functionId=start(?:&|$) url jsonjq-response-body 'if type == "object" then if (.images | type) == "array" then .images = [] | .showTimesDaily = 0 | (if has("countdown") then .countdown = 0 else . end) else . end else . end'
+
+# 保留旧版独立开屏接口拦截。
+^https?:\/\/api\.m\.jd\.com\/(?:client\.action)?\?(?:[^&]*&)*functionId=(?:getSplash|home_launchConfig)(?:&|$) url reject-dict
+
+# 使用：更新重写资源，开启 Rewrite / MitM，并安装、信任 MitM 证书。
+# 已缓存的广告无法通过响应重写删除；可在京东内清理缓存后结束 App 再测试。
+# 若仍有广告，请检查启动请求是否命中规则；此规则无法识别仅在 POST body 中的 functionId。
+# 排查需要京东版本、开屏请求 URL 与脱敏响应；不要分享 Cookie、token 或设备标识。
 
 # 京东首页广告
 ^https?:\/\/api\.m\.jd\.com\/client\.action\?(?:[^&]*&)*functionId=queryMaterialAdverts(?:&|$) url reject-dict
