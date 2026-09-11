@@ -53,7 +53,9 @@
   const set = typeof GM_setValue === 'function' ? GM_setValue : modern.setValue?.bind(modern);
   const xhr = typeof GM_xmlhttpRequest === 'function' ? GM_xmlhttpRequest : modern.xmlHttpRequest?.bind(modern);
   const menu = typeof GM_registerMenuCommand === 'function' ? GM_registerMenuCommand : modern.registerMenuCommand?.bind(modern);
-  let config = structuredClone(DEFAULT), storageError = false;
+  // 配置只包含 JSON 数据；使用 JSON 拷贝兼容 Safari 14.1 等没有 structuredClone 的版本。
+  const copyConfig = value => JSON.parse(JSON.stringify(value));
+  let config = copyConfig(DEFAULT), storageError = false;
   try {
     if (!get || !set) throw new Error();
     const saved = await get(STORE, null);
@@ -136,7 +138,7 @@
     $('keyState').textContent = p.key ? '已保存密钥（不显示）；输入新值可替换。' : '尚未设置密钥。';
   }
   function openSettings() {
-    show(); draft = structuredClone(config); form.hidden = false;
+    show(); draft = copyConfig(config); form.hidden = false;
     field('provider').value = config.provider; loadProfile();
     for (const k of ['prompt','hotkey','maxChars']) field(k).value = config[k];
     status(storageError ? '扩展存储不可用；请检查脚本授权，无法保存配置。' : '选择 Provider 后填写并保存；切换前请先保存当前修改。');
@@ -221,7 +223,7 @@
   }
   async function summarize() {
     show(); if (busy) return;
-    const snapshot = structuredClone(config), p = snapshot.profiles[snapshot.provider];
+    const snapshot = copyConfig(config), p = snapshot.profiles[snapshot.provider];
     if (!p.key) { openSettings(); status('请先设置并保存 API Key。'); return; }
     const id = ++serial; busy = true; $('run').disabled = true; $('copy').hidden = true;
     lastText = ''; $('result').textContent = ''; form.hidden = true; field('key').value = '';
