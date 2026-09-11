@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AI 网页总结助手 Pro
 // @namespace    https://github.com/cyx0118/ai_summary_helper-pro
-// @version      2.2.0
+// @version      2.2.1
 // @description  一键总结网页，侧栏显示，快捷输出，多语言，Q&A问答，导出，深色浅色模式
 // @author       超级小忍者
 // @match        *://*/*
@@ -22,7 +22,7 @@
     'use strict';
 
     const DEFAULT_CONFIG = {
-        shortcutKey: 'q', useControl: true, useOption: false, useCommand: false,
+        shortcutCode: 'KeyQ', useControl: true, useOption: false, useCommand: false,
         apiKey: '', apiEndpoint: 'https://api.deepseek.com/v1/chat/completions',
         modelName: 'deepseek-chat', maxContentLength: 8000,
         summaryLanguage: 'zh-CN', summaryLength: 'medium', summaryTone: 'neutral',
@@ -57,6 +57,8 @@
             if (!('useControl' in saved) && 'useCtrl' in saved) saved.useControl = saved.useCtrl;
             if (!('useOption' in saved) && 'useAlt' in saved) saved.useOption = saved.useAlt;
             if (!('useCommand' in saved)) saved.useCommand = false;
+            if (!saved.shortcutCode && saved.shortcutKey) saved.shortcutCode = legacyKeyToCode(saved.shortcutKey);
+            delete saved.shortcutKey;
             delete saved.useCtrl;
             delete saved.useShift;
             delete saved.useAlt;
@@ -264,7 +266,11 @@
     `);
 
     function showToast(m,d){const e=document.querySelector('.ai-toast');if(e)e.remove();const t=document.createElement('div');t.className='ai-toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),d||2000)}
-    function getShortcutText(c){const p=[];if(c.useControl)p.push('⌃ Control');if(c.useOption)p.push('⌥ Option');if(c.useCommand)p.push('⌘ Command');p.push(c.shortcutKey.toUpperCase());return p.join(' + ')}
+    const SHORTCUT_CODE_LABELS={Slash:'/',Period:'.',Comma:',',Semicolon:';',Quote:"'",BracketLeft:'[',BracketRight:']',Backslash:'\\',Minus:'-',Equal:'=',Backquote:'`',Space:'Space',Enter:'Enter',Tab:'Tab'};
+    function legacyKeyToCode(key){const k=String(key||'q');if(/^[a-z]$/i.test(k))return 'Key'+k.toUpperCase();if(/^[0-9]$/.test(k))return 'Digit'+k;const m={'/':'Slash','.':'Period',',':'Comma',';':'Semicolon',"'":'Quote','[':'BracketLeft',']':'BracketRight','\\':'Backslash','-':'Minus','=':'Equal','`':'Backquote',' ':'Space'};return m[k]||'KeyQ'}
+    function shortcutCodeLabel(code){if(/^Key[A-Z]$/.test(code))return code.slice(3);if(/^Digit[0-9]$/.test(code))return code.slice(5);return SHORTCUT_CODE_LABELS[code]||code}
+    function isSupportedShortcutCode(code){return /^Key[A-Z]$/.test(code)||/^Digit[0-9]$/.test(code)||Object.prototype.hasOwnProperty.call(SHORTCUT_CODE_LABELS,code)}
+    function getShortcutText(c){const p=[];if(c.useControl)p.push('⌃ Control');if(c.useOption)p.push('⌥ Option');if(c.useCommand)p.push('⌘ Command');p.push(shortcutCodeLabel(c.shortcutCode||'KeyQ'));return p.join(' + ')}
     function esc(s){return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"')}
     function md(text){let h=text.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>');h=h.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>');h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');h=h.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>');h=h.replace(/^\- (.+)$/gm,'<li>$1</li>').replace(/^\* (.+)$/gm,'<li>$1</li>');h=h.replace(/(<li>.*<\/li>\n?)+/g,'<ul>$&</ul>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>');h=h.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');return h}
 
@@ -292,6 +298,7 @@
         cfg.theme=order[(idx+1)%3];
         saveConfig(cfg);
         applyTheme();
+        // 更新按钮
         const btn=document.getElementById('ai-theme-toggle');
         if(btn)btn.setAttribute('data-theme',cfg.theme);
         const map={light:'浅色',dark:'深色',system:'跟随系统'};
@@ -348,11 +355,11 @@
                 <div class="ai-divider"></div>
                 <div class="ai-fg"><label>📝 系统提示词</label><div class="desc">自定义 AI 角色和行为</div><textarea id="s-prompt" rows="3">${esc(config.systemPrompt)}</textarea><div style="margin-top:4px"><button class="ai-btn ai-btn-secondary" id="s-reset-prompt" style="font-size:11px;padding:3px 10px">恢复默认</button></div></div>
                 <div class="ai-divider"></div>
-                <div class="ai-fg"><label>⌨️ 快捷键</label><div class="shortcut-row"><label class="mod-check"><input type="checkbox" id="s-control" ${config.useControl?'checked':''} /> ⌃ Control</label><label class="mod-check"><input type="checkbox" id="s-option" ${config.useOption?'checked':''} /> ⌥ Option</label><label class="mod-check"><input type="checkbox" id="s-command" ${config.useCommand?'checked':''} /> ⌘ Command</label><span style="color:var(--ai-text-secondary)">+</span><input type="text" class="key-input" id="s-key-input" value="${config.shortcutKey.toUpperCase()}" maxlength="1" /></div><div style="margin-top:6px"><span class="shortcut-preview" id="s-preview">${getShortcutText(config)}</span></div></div>
+                <div class="ai-fg"><label>⌨️ 快捷键</label><div class="desc">点击按键框后直接按下组合键；支持字母、数字以及 / . , ; [ ] \ - = 等按键</div><div class="shortcut-row"><label class="mod-check"><input type="checkbox" id="s-control" ${config.useControl?'checked':''} /> ⌃ Control</label><label class="mod-check"><input type="checkbox" id="s-option" ${config.useOption?'checked':''} /> ⌥ Option</label><label class="mod-check"><input type="checkbox" id="s-command" ${config.useCommand?'checked':''} /> ⌘ Command</label><span style="color:var(--ai-text-secondary)">+</span><input type="text" class="key-input" id="s-key-input" value="${shortcutCodeLabel(config.shortcutCode)}" data-code="${config.shortcutCode}" readonly /></div><div style="margin-top:6px"><span class="shortcut-preview" id="s-preview">${getShortcutText(config)}</span></div></div>
                 <div class="ai-btn-group"><button class="ai-btn ai-btn-secondary" id="s-reset">恢复默认</button><button class="ai-btn ai-btn-primary" id="s-save">💾 保存</button></div>
             </div>
         </div>
-    `;document.body.appendChild(ov);document.getElementById('ai-set-close').onclick=()=>ov.remove();ov.onclick=(e)=>{if(e.target===ov)ov.remove()};const ms=document.getElementById('s-model');const cg=document.getElementById('s-custom-grp');if(ms.value==='custom')cg.style.display='block';ms.onchange=()=>{cg.style.display=ms.value==='custom'?'block':'none'};document.getElementById('s-reset-prompt').onclick=()=>{document.getElementById('s-prompt').value=DEFAULT_CONFIG.systemPrompt;showToast('✅ 已恢复默认提示词')};const up=()=>{const c={useControl:document.getElementById('s-control').checked,useOption:document.getElementById('s-option').checked,useCommand:document.getElementById('s-command').checked,shortcutKey:document.getElementById('s-key-input').value||'Q'};document.getElementById('s-preview').textContent=getShortcutText(c)};['s-control','s-option','s-command','s-key-input'].forEach(id=>{document.getElementById(id).addEventListener('input',up);document.getElementById(id).addEventListener('change',up)});document.getElementById('s-key-input').addEventListener('input',(e)=>{e.target.value=e.target.value.replace(/[^a-zA-Z]/g,'').substring(0,1)});document.getElementById('s-reset').onclick=()=>{if(confirm('确定恢复所有设置为默认值吗？')){saveConfig(DEFAULT_CONFIG);ov.remove();applyTheme();showToast('✅ 已恢复默认');setTimeout(()=>createSettings(),300)}};document.getElementById('s-save').onclick=()=>{const nc={apiKey:document.getElementById('s-key').value.trim(),apiEndpoint:document.getElementById('s-endpoint').value.trim(),modelName:ms.value==='custom'?document.getElementById('s-custom').value.trim():ms.value,maxContentLength:parseInt(document.getElementById('s-maxlen').value)||8000,enableStreaming:document.getElementById('s-stream').checked,theme:document.getElementById('s-theme').value,summaryLanguage:document.getElementById('s-lang').value,summaryLength:document.getElementById('s-length').value,summaryTone:document.getElementById('s-tone').value,systemPrompt:document.getElementById('s-prompt').value.trim()||DEFAULT_CONFIG.systemPrompt,shortcutKey:(document.getElementById('s-key-input').value||'q').toLowerCase(),useControl:document.getElementById('s-control').checked,useOption:document.getElementById('s-option').checked,useCommand:document.getElementById('s-command').checked,sidebarWidth:config.sidebarWidth};if(!nc.apiKey){showToast('⚠️ 请输入 API Key');return}if(!nc.apiEndpoint){showToast('⚠️ 请输入 API 端点');return}saveConfig(nc);ov.remove();summaryCache=null;applyTheme();showToast('✅ 已保存，快捷键：'+getShortcutText(nc))}}
+    `;document.body.appendChild(ov);document.getElementById('ai-set-close').onclick=()=>ov.remove();ov.onclick=(e)=>{if(e.target===ov)ov.remove()};const ms=document.getElementById('s-model');const cg=document.getElementById('s-custom-grp');if(ms.value==='custom')cg.style.display='block';ms.onchange=()=>{cg.style.display=ms.value==='custom'?'block':'none'};document.getElementById('s-reset-prompt').onclick=()=>{document.getElementById('s-prompt').value=DEFAULT_CONFIG.systemPrompt;showToast('✅ 已恢复默认提示词')};const keyInput=document.getElementById('s-key-input');const up=()=>{const c={useControl:document.getElementById('s-control').checked,useOption:document.getElementById('s-option').checked,useCommand:document.getElementById('s-command').checked,shortcutCode:keyInput.dataset.code||config.shortcutCode||'KeyQ'};document.getElementById('s-preview').textContent=getShortcutText(c)};['s-control','s-option','s-command'].forEach(id=>{document.getElementById(id).addEventListener('input',up);document.getElementById(id).addEventListener('change',up)});keyInput.addEventListener('keydown',(e)=>{if(['Control','Alt','Meta','Shift'].includes(e.key))return;e.preventDefault();e.stopPropagation();if(!isSupportedShortcutCode(e.code)){showToast('⚠️ 该按键暂不支持');return}keyInput.dataset.code=e.code;keyInput.value=shortcutCodeLabel(e.code);if(e.ctrlKey||e.altKey||e.metaKey){document.getElementById('s-control').checked=e.ctrlKey;document.getElementById('s-option').checked=e.altKey;document.getElementById('s-command').checked=e.metaKey}up();showToast('✅ 快捷键已记录：'+getShortcutText({useControl:document.getElementById('s-control').checked,useOption:document.getElementById('s-option').checked,useCommand:document.getElementById('s-command').checked,shortcutCode:e.code}))});document.getElementById('s-reset').onclick=()=>{if(confirm('确定恢复所有设置为默认值吗？')){saveConfig(DEFAULT_CONFIG);ov.remove();applyTheme();showToast('✅ 已恢复默认');setTimeout(()=>createSettings(),300)}};document.getElementById('s-save').onclick=()=>{const nc={apiKey:document.getElementById('s-key').value.trim(),apiEndpoint:document.getElementById('s-endpoint').value.trim(),modelName:ms.value==='custom'?document.getElementById('s-custom').value.trim():ms.value,maxContentLength:parseInt(document.getElementById('s-maxlen').value)||8000,enableStreaming:document.getElementById('s-stream').checked,theme:document.getElementById('s-theme').value,summaryLanguage:document.getElementById('s-lang').value,summaryLength:document.getElementById('s-length').value,summaryTone:document.getElementById('s-tone').value,systemPrompt:document.getElementById('s-prompt').value.trim()||DEFAULT_CONFIG.systemPrompt,shortcutCode:keyInput.dataset.code||config.shortcutCode||'KeyQ',useControl:document.getElementById('s-control').checked,useOption:document.getElementById('s-option').checked,useCommand:document.getElementById('s-command').checked,sidebarWidth:config.sidebarWidth};if(!nc.apiKey){showToast('⚠️ 请输入 API Key');return}if(!nc.apiEndpoint){showToast('⚠️ 请输入 API 端点');return}saveConfig(nc);ov.remove();summaryCache=null;applyTheme();showToast('✅ 已保存，快捷键：'+getShortcutText(nc))}}
 
     // ===================== 初始化 =====================
     const FLOATING_BTN_VISIBLE_KEY = 'ai_summary_floating_btn_visible';
@@ -374,7 +381,7 @@
         b.oncontextmenu=(e)=>{e.preventDefault();setFloatingBtnVisible(false);showToast('已隐藏设置按钮，可从油猴菜单恢复')};
     }
 
-    function regShortcut(){document.addEventListener('keydown',(e)=>{const c=getConfig();const km=e.key.toLowerCase()===c.shortcutKey.toLowerCase();const controlMatch=c.useControl?e.ctrlKey:!e.ctrlKey;const optionMatch=c.useOption?e.altKey:!e.altKey;const commandMatch=c.useCommand?e.metaKey:!e.metaKey;if(km&&controlMatch&&optionMatch&&commandMatch){const tag=e.target.tagName.toLowerCase();if(tag==='input'||tag==='textarea'||tag==='select'||e.target.isContentEditable)return;e.preventDefault();e.stopPropagation();if(sidebar&&sidebar.classList.contains('open'))closeSidebar();else{if(!c.apiKey){showToast('⚠️ 请先设置 API Key');createSettings();return}openSidebar()}}if(e.key==='Escape')closeSidebar()})}
+    function regShortcut(){document.addEventListener('keydown',(e)=>{const c=getConfig();const keyMatch=e.code===(c.shortcutCode||'KeyQ');const controlMatch=c.useControl?e.ctrlKey:!e.ctrlKey;const optionMatch=c.useOption?e.altKey:!e.altKey;const commandMatch=c.useCommand?e.metaKey:!e.metaKey;const shiftMatch=!e.shiftKey;if(keyMatch&&controlMatch&&optionMatch&&commandMatch&&shiftMatch){const target=e.target;const tag=target&&target.tagName?target.tagName.toLowerCase():'';if(tag==='input'||tag==='textarea'||tag==='select'||(target&&target.isContentEditable))return;e.preventDefault();e.stopImmediatePropagation();if(sidebar&&sidebar.classList.contains('open'))closeSidebar();else{if(!c.apiKey){showToast('⚠️ 请先设置 API Key');createSettings();return}openSidebar()}}if(e.key==='Escape')closeSidebar()},true)}
 
     GM_registerMenuCommand('⚙️ 设置',()=>createSettings());
     GM_registerMenuCommand('👁 显示/隐藏悬浮设置按钮',()=>{const visible=!isFloatingBtnVisible();setFloatingBtnVisible(visible);showToast(visible?'✅ 已显示设置按钮':'已隐藏设置按钮')});
