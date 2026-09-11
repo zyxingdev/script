@@ -1,19 +1,19 @@
 # 京东 App 开屏广告清理（Quantumult X 原生重写）
-# 版本：2026-09-05
-# 状态：基于公开接口规则编写，尚未在你的京东版本上实测。
+# 版本：2026-09-11
+# 状态：已按 2026-09-11 的脱敏 HTTP 抓取补充当前素材域名。
 # 导入：作为 QX「重写资源」使用，资源解析器关闭（opt-parser=false）。
 # 前提：开启重写与 MitM，安装并完全信任 QX 的 CA 证书。
 # 请先停用旧的京东开屏重写，避免相同接口被其他规则优先匹配。
 # 启用后在京东内清理缓存，再彻底退出并重新打开；本地已缓存素材无法由网络重写直接删除。
 # 无外部 JS 依赖；需要 QX 支持 jsonjq-response-body。
-# 覆盖范围：URL 查询参数中的 start / home_launchConfig，以及下列已知素材路径。
-# 若 functionId 移至 POST 请求体、接口改名或使用其他素材路径，需要抓包适配。
+# 覆盖范围：URL 查询参数中的 start / home_launchConfig，以及两个已知开屏素材路径。
+# 当前抓取中的 startup 响应只有 deviceLevel，开屏素材由后续图片请求提供，因此直接拦截该素材路径。
 # 接口依据：
 # https://gist.github.com/blackmatrix7/281d382cf84d0ada343f56244e8dcd3c
 # https://github.com/blackmatrix7/ios_rule_script/blob/master/rewrite/Loon/AllInOne/AllInOne.plugin
 # 语法：https://github.com/crossutility/Quantumult-X/blob/master/sample.conf
 
-hostname = api.m.jd.com, m.360buyimg.com
+hostname = api.m.jd.com, m.360buyimg.com, quic.360buyimg.com
 
 # 1. 清空 start 响应的开屏图片，保留其他启动配置；兼容查询参数顺序变化。
 ^https?://api\.m\.jd\.com/(?=[^#]*[?&]functionId=start(?:&|$))[^#]*$ url jsonjq-response-body 'if type == "object" then .images = [] | .showTimesDaily = 0 else . end'
@@ -24,3 +24,7 @@ hostname = api.m.jd.com, m.360buyimg.com
 # 3. 已知开屏素材路径兜底。不扩大为整个图片域名，以免影响商品图片。
 # 该路径按尺寸识别，无法保证只承载广告；如发现相应尺寸的正常图片缺失，禁用此条。
 ^https?://m\.360buyimg\.com/mobilecms/s1125x2436_jfs/ url reject-200
+
+# 当前抓取到的开屏素材路径（quic 域名）。
+# 该尺寸路径可能承载正常图片；如发现正常图片缺失，停用此条。
+^https?://quic\.360buyimg\.com/mobilecms/s1125x2436_jfs/ url reject-200

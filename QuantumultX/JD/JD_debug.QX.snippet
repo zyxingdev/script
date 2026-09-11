@@ -1,10 +1,17 @@
-# 京东临时诊断；先保存 JD_start.debug.js 到 QX/Scripts。
+# 京东临时诊断；先保存 JD_start.debug.js、JD_startup.debug.js 到 QX/Scripts。
 # 停用原京东资源后导入；opt-parser=false。完整步骤见同目录 README.md。
-# start 会输出日志与通知；另外两条在请求记录中核对。
-hostname = api.m.jd.com, m.360buyimg.com
+# startup 会输出通知；另外几条在网络活动中核对。
+hostname = api.m.jd.com, m.360buyimg.com, quic.360buyimg.com
 
+# 当前京东版本把 functionId=startup 放在 POST 请求体，URL 只有 client.action?。
+^https?://api\.m\.jd\.com/client\.action(?:\?.*)?$ url script-request-body JD_startup.debug.js
+
+# 兼容仍把 start 放在 URL 查询参数中的旧版本。
 ^https?://api\.m\.jd\.com/(?=[^#]*[?&]functionId=start(?:&|$))[^#]*$ url script-response-body JD_start.debug.js
 
 ^https?://api\.m\.jd\.com/(?=[^#]*[?&]functionId=home_launchConfig(?:&|$))[^#]*$ url reject-dict
 
 ^https?://m\.360buyimg\.com/mobilecms/s1125x2436_jfs/ url reject-200
+
+# 你这次抓到的开屏素材域名。
+^https?://quic\.360buyimg\.com/mobilecms/s1125x2436_jfs/ url reject-200
