@@ -1,0 +1,10 @@
+# 京东临时诊断；先保存 JD_start.debug.js 到 QX/Scripts。
+# 停用原京东资源后导入；opt-parser=false。完整步骤见同目录 README.md。
+# start 会输出日志与通知；另外两条在请求记录中核对。
+hostname = api.m.jd.com, m.360buyimg.com
+
+^https?://api\.m\.jd\.com/(?=[^#]*[?&]functionId=start(?:&|$))[^#]*$ url script-response-body JD_start.debug.js
+
+^https?://api\.m\.jd\.com/(?=[^#]*[?&]functionId=home_launchConfig(?:&|$))[^#]*$ url reject-dict
+
+^https?://m\.360buyimg\.com/mobilecms/s1125x2436_jfs/ url reject-200
