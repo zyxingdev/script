@@ -2,23 +2,6 @@
 
 This repository contains personal scripts and local adaptations. It is not a single-origin codebase. Keep attribution and upstream notices when redistributing modified copies.
 
-## NSRingo / iRingo WeatherKit
-
-- Upstream: https://github.com/NSRingo/iRingo and https://github.com/NSRingo/WeatherKit
-- Documentation: https://nsringo.github.io/guide/Weather/weather-kit.html
-- License observed during review: Apache-2.0 for the NSRingo/iRingo repository.
-- Local files:
-  - `QuantumultX/WeatherKit/iRingo.WeatherKit.QX.snippet`
-  - `QuantumultX/WeatherKit/WeatherKit.Country.qx.js`
-  - `Stash/WeatherKit/iRingo.WeatherKit.stoverride`
-  - `Scripts/WeatherKit/request.bundle.js`
-  - `Scripts/WeatherKit/response.bundle.js`
-  - `Scripts/WeatherKit/WeatherKit.AirQualityScale.js`
-- Local modifications:
-  - Quantumult X raw URL adaptation.
-  - WeatherKit country fallback for affected iOS 26.6 requests.
-  - Air-quality scale handling and local CN/HK AQHI labels.
-
 ## Bilibili Remove Ads for Stash
 
 - Original rule author: kokoryh (https://github.com/kokoryh)
