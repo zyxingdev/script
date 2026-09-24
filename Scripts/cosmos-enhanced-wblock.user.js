@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cosmos Enhanced for wBlock
 // @namespace    https://github.com/zyxingdev/script
-// @version      1.0.3
+// @version      1.0.0
 // @description  增强小宇宙网页端：音频和高清图片下载、ListenNotes 搜索、播放器倍速调节
 // @author       zyxingdev (based on LGiki/cosmos-enhanced)
 // @updateURL    https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js
