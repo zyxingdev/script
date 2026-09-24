@@ -46,18 +46,32 @@ https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Bilibili/Bilibili_
 ### Google 搜索重定向
 
 - 覆写：[Google.stoverride](Stash/Google/Google.stoverride)
-- 说明：[Stash/Google/README.md](Stash/Google/README.md)
+- 说明：[Stash/Google/Google.stoverride](Stash/Google/Google.stoverride)
 - 订阅地址：
 
 ```text
 https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Google/Google.stoverride
 ```
 
+## 用户脚本
+
+### Cosmos Enhanced for wBlock
+
+- 脚本：[Scripts/cosmos-enhanced-wblock.user.js](Scripts/cosmos-enhanced-wblock.user.js)
+- 更新地址：
+
+```text
+https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js
+```
+
+该脚本基于 [LGiki/cosmos-enhanced](https://github.com/LGiki/cosmos-enhanced) 移植为 wBlock 用户脚本，保留小宇宙音频与封面下载、ListenNotes 搜索和播放器倍速调节功能。原项目使用 MIT License，来源及修改说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
 ## 第三方来源与许可证
 
 本仓库包含第三方脚本的派生版本、配置引用和本地适配代码。第三方来源、已确认许可证和未确认许可证的部分记录在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 - Bilibili 去广告覆写：基于 kokoryh 规则与 Kelee/Script Hub 转换结果进行本地调整，保留原作者及远程脚本来源说明。
+- Cosmos Enhanced for wBlock：基于 LGiki 的 Cosmos Enhanced 浏览器扩展移植，适配用户脚本运行方式并保留上游归属；原项目采用 MIT License。
 
 本仓库中由 zyxingdev 新增的说明文字和本地适配改动，在不覆盖第三方材料原有权利的前提下，按 Apache-2.0 许可提供。第三方材料继续遵循各自的上游许可证或授权状态。
 
