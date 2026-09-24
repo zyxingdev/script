@@ -12,6 +12,7 @@
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
 // @connect      xyzcdn.net
+// @connect      xmcdn.com
 // @connect      audio.xiaoyuzhoufm.com
 // ==/UserScript==
 
