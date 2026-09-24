@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Bilibili/Bilibili_
 ### Google 搜索重定向
 
 - 覆写：[Google.stoverride](Stash/Google/Google.stoverride)
-- 说明：[Stash/Google/Google.stoverride](Stash/Google/Google.stoverride)
+- 说明：[Stash/Google/README.md](Stash/Google/README.md)
 - 订阅地址：
 
 ```text
