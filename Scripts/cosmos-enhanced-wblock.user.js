@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cosmos Enhanced for wBlock
 // @namespace    https://github.com/zyxingdev/script
-// @version      1.0.0
+// @version      1.0.1
 // @description  增强小宇宙网页端：音频和高清图片下载、ListenNotes 搜索、播放器倍速调节
 // @author       zyxingdev (based on LGiki/cosmos-enhanced)
 // @updateURL    https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js
@@ -66,14 +66,14 @@
     const style = document.createElement('style');
     style.id = 'cosmos-enhanced-style';
     style.textContent = `
-      .cosmos-enhanced-container{display:flex;flex-direction:column;gap:8px;margin:12px 0;padding:12px;border-radius:8px;background:rgba(127,127,127,.08);font-size:14px}
+      .cosmos-enhanced-container{display:flex;flex-direction:column;gap:8px;margin:12px 0;padding:0;border:0;background:transparent;color:inherit;font-size:14px}
       .cosmos-enhanced-buttons-container{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-      .cosmos-enhanced-container button,.cosmos-enhanced-container summary{font:inherit;color:inherit;cursor:pointer}
-      .cosmos-button{border:1px solid rgba(127,127,127,.3);border-radius:6px;background:transparent;padding:6px 10px}
-      .cosmos-button:hover,.cosmos-dropdown-item:hover{background:rgba(127,127,127,.15)}
+      .cosmos-enhanced-container button,.cosmos-enhanced-container summary{font:inherit;cursor:pointer}
+      .cosmos-button{color:#24292f!important;-webkit-text-fill-color:#24292f!important;border:1px solid #b6bec8;border-radius:6px;background:#fff!important;padding:6px 10px;line-height:1.4;opacity:1;text-shadow:none;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+      .cosmos-button:hover,.cosmos-dropdown-item:hover{background:#f1f5f9!important}
       .cosmos-dropdown{position:relative}.cosmos-dropdown summary{list-style:none}.cosmos-dropdown summary::-webkit-details-marker{display:none}
-      .cosmos-dropdown-menu{position:absolute;z-index:9999;top:calc(100% + 4px);left:0;min-width:180px;max-height:50vh;overflow:auto;padding:4px;border:1px solid rgba(127,127,127,.3);border-radius:6px;background:Canvas;color:CanvasText;box-shadow:0 4px 14px rgba(0,0,0,.18)}
-      .cosmos-dropdown-item{display:block;width:100%;border:0;background:transparent;text-align:left;padding:7px 9px;border-radius:4px}
+      .cosmos-dropdown-menu{position:absolute;z-index:9999;top:calc(100% + 4px);left:0;min-width:180px;max-height:50vh;overflow:auto;padding:4px;border:1px solid #b6bec8;border-radius:6px;background:#fff;color:#24292f;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+      .cosmos-dropdown-item{display:block;width:100%;color:#24292f!important;-webkit-text-fill-color:#24292f!important;border:0;background:transparent!important;text-align:left;padding:7px 9px;border-radius:4px;line-height:1.4;opacity:1;text-shadow:none}
       #playback-rate-controller{display:inline-flex;align-items:center;gap:4px;margin-left:10px;font-size:13px}
       #playback-rate-controller button{border:0;background:transparent;color:inherit;cursor:pointer;padding:2px 5px}
       #playback-rate{min-width:3.2em;text-align:center;cursor:pointer}
