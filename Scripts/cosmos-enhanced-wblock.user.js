@@ -62,13 +62,19 @@
     link.remove();
   };
   const downloadAudio = (url, name, buttonEl) => {
-    const target = parseUrl(url);
+    let target = parseUrl(url);
     if (!target || !/^https?:$/.test(target.protocol)) return;
+    // Ximalaya's RSS link redirects to the actual audio CDN. wBlock checks
+    // @connect before following it, so request the supplied CDN URL directly.
+    if (target.hostname === 'jt.ximalaya.com') {
+      const audioCdn = parseUrl(target.searchParams.get('jt'));
+      if (audioCdn?.protocol === 'https:' && audioCdn.hostname.endsWith('.xmcdn.com')) target = audioCdn;
+    }
     const chunkSize = 1024 * 1024;
     const showFailure = message => {
       buttonEl.disabled = false;
       buttonEl.textContent = '⚠ 音频下载失败，点击重试';
-      buttonEl.title = message;
+      buttonEl.title = `音频域名：${target.hostname}；${message}`;
     };
     const requestChunk = start => new Promise((resolve, reject) => {
       if (typeof GM_xmlhttpRequest !== 'function') {
