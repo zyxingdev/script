@@ -64,41 +64,86 @@
   const downloadAudio = (url, name, buttonEl) => {
     const target = parseUrl(url);
     if (!target || !/^https?:$/.test(target.protocol)) return;
+    const chunkSize = 1024 * 1024;
     const showFailure = message => {
       buttonEl.disabled = false;
       buttonEl.textContent = '⚠ 音频下载失败，点击重试';
       buttonEl.title = message;
     };
-    if (typeof GM_xmlhttpRequest !== 'function') {
-      showFailure('wBlock 未提供 GM_xmlhttpRequest。请确认脚本已启用并在 wBlock 中应用更改。');
-      return;
-    }
+    const requestChunk = start => new Promise((resolve, reject) => {
+      if (typeof GM_xmlhttpRequest !== 'function') {
+        reject(new Error('wBlock 未提供 GM_xmlhttpRequest'));
+        return;
+      }
+      GM_xmlhttpRequest({
+        method: 'GET',
+        url: target.href,
+        headers: { Range: `bytes=${start}-${start + chunkSize - 1}` },
+        responseType: 'arraybuffer',
+        timeout: 60000,
+        onload: response => {
+          const data = response.response;
+          const size = data instanceof Blob ? data.size : (data?.byteLength ?? 0);
+          if (![200, 206].includes(response.status) || !size) {
+            reject(new Error(`HTTP ${response.status || '未知'}，返回 ${size} 字节`));
+            return;
+          }
+          resolve({ data, size, status: response.status, headers: response.responseHeaders || '' });
+        },
+        onerror: response => reject(new Error(response?.error || response?.statusText || `wBlock 请求失败${response?.status ? ` (HTTP ${response.status})` : ''}`)),
+        ontimeout: () => reject(new Error('wBlock 请求超时')),
+      });
+    });
+    const fetchAudio = async () => {
+      const response = await fetch(target.href, { mode: 'cors', credentials: 'omit' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.blob();
+    };
+    const readAudio = async () => {
+      const parts = [];
+      let offset = 0;
+      let total = null;
+      while (true) {
+        const chunk = await requestChunk(offset);
+        parts.push(chunk.data);
+        offset += chunk.size;
+        if (chunk.status === 200) break;
+        const range = chunk.headers.match(/content-range:\s*bytes\s+(\d+)-(\d+)\/(\d+)/i);
+        if (!range || Number(range[1]) !== offset - chunk.size || Number(range[2]) + 1 !== offset) {
+          throw new Error('音频服务器返回的分段范围无效');
+        }
+        total = Number(range[3]);
+        buttonEl.textContent = `⏳ 正在下载音频 ${Math.min(100, Math.floor(offset / total * 100))}%`;
+        if (offset >= total) break;
+      }
+      return new Blob(parts, { type: 'audio/mp4' });
+    };
     buttonEl.disabled = true;
     buttonEl.textContent = '⏳ 正在下载音频…';
-    GM_xmlhttpRequest({
-      method: 'GET',
-      url: target.href,
-      responseType: 'arraybuffer',
-      timeout: 0,
-      onload: response => {
-        const data = response.response;
-        const byteLength = data instanceof Blob ? data.size : (data?.byteLength ?? data?.length ?? 0);
-        if (response.status < 200 || response.status >= 300 || !byteLength) {
-          showFailure(`音频服务器返回 HTTP ${response.status || '未知'}，请确认该节目可公开访问后重试。`);
+    (async () => {
+      let blob;
+      try {
+        blob = await readAudio();
+      } catch (gmError) {
+        buttonEl.textContent = '⏳ 尝试浏览器下载…';
+        try {
+          blob = await fetchAudio();
+        } catch (fetchError) {
+          showFailure(`wBlock：${gmError.message}；浏览器：${fetchError.message}`);
           return;
         }
-        const mimeType = response.responseHeaders?.match(/content-type:\s*([^;\r\n]+)/i)?.[1] || 'audio/mp4';
-        const blob = data instanceof Blob ? data : new Blob([data], { type: mimeType });
+      }
+      try {
         const objectUrl = URL.createObjectURL(blob);
         directDownload(objectUrl, `${cleanName(name)}${/\.[a-z0-9]{2,5}$/i.test(name) ? '' : '.m4a'}`);
         buttonEl.disabled = false;
         buttonEl.textContent = '🎵 音频已开始下载';
         buttonEl.title = `${(blob.size / 1024 / 1024).toFixed(1)} MB`;
         window.setTimeout(() => URL.revokeObjectURL(objectUrl), 120_000);
-      },
-      onerror: () => showFailure('wBlock 请求音频 CDN 失败。请确认脚本已更新并允许 @connect xmcdn.com。'),
-      ontimeout: () => showFailure('音频请求超时。请重试，或确认当前网络可访问音频 CDN。'),
-    });
+      } catch (error) {
+        showFailure(`保存音频失败：${error.message}`);
+      }
+    })();
   };
   const download = (url, name) => {
     if (!url) return;
