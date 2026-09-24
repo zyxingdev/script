@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cosmos Enhanced for wBlock
 // @namespace    https://github.com/zyxingdev/script
-// @version      1.0.2
+// @version      1.0.3
 // @description  增强小宇宙网页端：音频和高清图片下载、ListenNotes 搜索、播放器倍速调节
 // @author       zyxingdev (based on LGiki/cosmos-enhanced)
 // @updateURL    https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js
@@ -10,7 +10,9 @@
 // @match        https://www.xiaoyuzhoufm.com/episode/*
 // @match        https://www.xiaoyuzhoufm.com/podcast/*
 // @run-at       document-idle
-// @grant        none
+// @grant        GM_xmlhttpRequest
+// @connect      xyzcdn.net
+// @connect      audio.xiaoyuzhoufm.com
 // ==/UserScript==
 
 (() => {
@@ -49,16 +51,59 @@
     }
     return document.querySelector('h1.title')?.innerText || null;
   };
-  const download = (url, name) => {
-    if (!url) return;
+  const directDownload = (url, name) => {
     const link = document.createElement('a');
     link.href = url;
     link.download = cleanName(name);
-    link.rel = 'noopener';
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
     link.remove();
+  };
+  const downloadAudio = (url, name, buttonEl) => {
+    const target = parseUrl(url);
+    if (!target || !/^https?:$/.test(target.protocol)) return;
+    const fallback = () => {
+      buttonEl.disabled = false;
+      buttonEl.dataset.fallbackUrl = target.href;
+      buttonEl.textContent = '🎵 在新页面打开音频';
+      buttonEl.title = '自动下载失败；再次点击打开音频后，可从浏览器菜单保存';
+    };
+    if (typeof GM_xmlhttpRequest !== 'function') {
+      fallback();
+      return;
+    }
+    buttonEl.disabled = true;
+    buttonEl.textContent = '⏳ 正在准备音频…';
+    GM_xmlhttpRequest({
+      method: 'GET',
+      url: target.href,
+      responseType: 'blob',
+      onload: response => {
+        if (response.status < 200 || response.status >= 300 || !response.response?.size) {
+          buttonEl.disabled = false;
+          fallback();
+          return;
+        }
+        const blob = response.response.type ? response.response : new Blob([response.response], { type: 'audio/mp4' });
+        const objectUrl = URL.createObjectURL(blob);
+        directDownload(objectUrl, `${cleanName(name)}${/\.[a-z0-9]{2,5}$/i.test(name) ? '' : '.m4a'}`);
+        buttonEl.disabled = false;
+        buttonEl.textContent = '🎵 音频已开始下载';
+        window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+      },
+      onerror: () => { buttonEl.disabled = false; fallback(); },
+      ontimeout: () => { buttonEl.disabled = false; fallback(); },
+    });
+  };
+  const download = (url, name) => {
+    if (!url) return;
+    const target = parseUrl(url);
+    if (!target || !/^https?:$/.test(target.protocol)) return;
+    // Cross-origin <a download> is ignored by Safari. For images, use the page URL
+    // as a native fallback; audio uses downloadAudio and the userscript request API.
+    const opened = window.open(target.href, '_blank', 'noopener');
+    if (!opened) location.href = target.href;
   };
   const search = keyword => window.open(`https://www.listennotes.com/search/?q=${encodeURIComponent(keyword)}`, '_blank', 'noopener');
   const addStyle = () => {
@@ -142,11 +187,17 @@
     const box = document.createElement('div'); box.className = 'cosmos-enhanced-container';
     const downloads = document.createElement('div'); downloads.className = 'cosmos-enhanced-buttons-container';
     const audio = document.querySelector('audio');
+    const audioUrl = audio?.currentSrc || audio?.src
+      || document.querySelector('meta[property="og:audio"]')?.content
+      || document.querySelector('meta[property="og:audio:url"]')?.content;
     const ep = episodeName(), pod = podcastName();
-    if (audio?.src && ep && pod) {
-      const url = parseUrl(audio.src);
-      const ext = url?.pathname.match(/\.(mp3|m4a|wav|ogg|flac|ape|aac|aiff|wma|webm)$/i)?.[0];
-      if (ext) downloads.appendChild(button('🎵 下载单集音频', () => download(audio.src, `${ep} - ${pod}${ext}`)));
+    if (audioUrl) {
+      const directAudioUrl = parseUrl(audioUrl)?.href;
+      downloads.appendChild(button('🎵 下载单集音频', event => {
+        const el = event.currentTarget;
+        if (el.dataset.fallbackUrl) { window.open(el.dataset.fallbackUrl, '_blank'); return; }
+        downloadAudio(directAudioUrl, `${ep || '小宇宙单集'} - ${pod || ''}`, el);
+      }));
     }
     const cover = document.querySelector('header .avatar, header .episode-image');
     const coverUrl = cover && getFullImageUrl(cover.src);
