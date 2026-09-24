@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Cosmos Enhanced for wBlock
 // @namespace    https://github.com/zyxingdev/script
-// @version      1.0.1
+// @version      1.0.2
 // @description  增强小宇宙网页端：音频和高清图片下载、ListenNotes 搜索、播放器倍速调节
 // @author       zyxingdev (based on LGiki/cosmos-enhanced)
 // @updateURL    https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js
@@ -66,17 +66,17 @@
     const style = document.createElement('style');
     style.id = 'cosmos-enhanced-style';
     style.textContent = `
-      .cosmos-enhanced-container{display:flex;flex-direction:column;gap:8px;margin:12px 0;padding:0;border:0;background:transparent;color:inherit;font-size:14px}
+      .cosmos-enhanced-container{display:flex;flex-direction:column;gap:8px;margin:12px 0;padding:0;border:0;background:transparent;color:inherit;font-size:14px;position:relative;z-index:2}
       .cosmos-enhanced-buttons-container{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-      .cosmos-enhanced-container button,.cosmos-enhanced-container summary{font:inherit;cursor:pointer}
-      .cosmos-button{color:#24292f!important;-webkit-text-fill-color:#24292f!important;border:1px solid #b6bec8;border-radius:6px;background:#fff!important;padding:6px 10px;line-height:1.4;opacity:1;text-shadow:none;box-shadow:0 1px 2px rgba(0,0,0,.08)}
-      .cosmos-button:hover,.cosmos-dropdown-item:hover{background:#f1f5f9!important}
+      .cosmos-enhanced-container button,.cosmos-enhanced-container summary{font:inherit;cursor:pointer;pointer-events:auto}
+      .cosmos-enhanced-container .cosmos-button{color:#24292f!important;-webkit-text-fill-color:#24292f!important;border:1px solid #b6bec8;border-radius:6px;background:#fff!important;padding:6px 10px;line-height:1.4;opacity:1;text-shadow:none;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+      .cosmos-enhanced-container .cosmos-button:hover,.cosmos-dropdown-item:hover{background:#f1f5f9!important}
       .cosmos-dropdown{position:relative}.cosmos-dropdown summary{list-style:none}.cosmos-dropdown summary::-webkit-details-marker{display:none}
       .cosmos-dropdown-menu{position:absolute;z-index:9999;top:calc(100% + 4px);left:0;min-width:180px;max-height:50vh;overflow:auto;padding:4px;border:1px solid #b6bec8;border-radius:6px;background:#fff;color:#24292f;box-shadow:0 4px 14px rgba(0,0,0,.18)}
-      .cosmos-dropdown-item{display:block;width:100%;color:#24292f!important;-webkit-text-fill-color:#24292f!important;border:0;background:transparent!important;text-align:left;padding:7px 9px;border-radius:4px;line-height:1.4;opacity:1;text-shadow:none}
-      #playback-rate-controller{display:inline-flex;align-items:center;gap:4px;margin-left:10px;font-size:13px}
-      #playback-rate-controller button{border:0;background:transparent;color:inherit;cursor:pointer;padding:2px 5px}
-      #playback-rate{min-width:3.2em;text-align:center;cursor:pointer}
+      .cosmos-dropdown-item{display:block;width:100%;color:#24292f!important;-webkit-text-fill-color:#24292f!important;border:0;background:transparent!important;text-align:left;padding:7px 9px;border-radius:4px;line-height:1.4;opacity:1;text-shadow:none;cursor:pointer;pointer-events:auto}
+      #playback-rate-controller{display:inline-flex;align-items:center;gap:4px;margin:8px 0 0 10px;padding:4px 7px;border:1px solid #b6bec8;border-radius:6px;background:#fff;color:#24292f;font-size:13px;vertical-align:middle;position:relative;z-index:5}
+      #playback-rate-controller button{border:0!important;background:transparent!important;color:#24292f!important;-webkit-text-fill-color:#24292f!important;cursor:pointer;padding:2px 5px;pointer-events:auto}
+      #playback-rate{min-width:3.2em;text-align:center;cursor:pointer;color:#24292f!important;-webkit-text-fill-color:#24292f!important}
     `;
     (document.head || document.documentElement).appendChild(style);
   };
@@ -89,7 +89,14 @@
     const details = document.createElement('details'); details.className = 'cosmos-dropdown';
     const summary = document.createElement('summary'); summary.className = 'cosmos-button'; summary.textContent = label;
     const menu = document.createElement('div'); menu.className = 'cosmos-dropdown-menu';
-    items.forEach(item => menu.appendChild(button(item.label, () => { details.open = false; item.action(); })));
+    items.forEach(item => {
+      const menuItem = document.createElement('button');
+      menuItem.type = 'button';
+      menuItem.className = 'cosmos-dropdown-item';
+      menuItem.textContent = item.label;
+      menuItem.addEventListener('click', () => { details.open = false; item.action(); });
+      menu.appendChild(menuItem);
+    });
     details.append(summary, menu);
     details.addEventListener('toggle', () => {
       if (details.open) document.querySelectorAll('.cosmos-dropdown[open]').forEach(other => { if (other !== details) other.open = false; });
@@ -168,44 +175,81 @@
   let currentAudio = null;
   const addPlaybackRate = () => {
     const audio = document.querySelector('audio');
-    if (!audio) { currentAudio = null; return; }
-    const holder = audio.previousElementSibling;
-    if (!holder) return;
-    if (currentAudio === audio && holder.querySelector('#playback-rate-controller')) return;
+    if (!audio) {
+      document.querySelector('#playback-rate-controller')?.remove();
+      currentAudio = null;
+      return;
+    }
+    if (currentAudio === audio && document.querySelector('#playback-rate-controller')) return;
     document.querySelector('#playback-rate-controller')?.remove();
     currentAudio = audio;
-    const control = document.createElement('div'); control.id = 'playback-rate-controller';
-    const adjust = amount => { const rate = Math.round((audio.playbackRate + amount) * 10) / 10; if (rate >= .1 && rate <= 16) audio.playbackRate = rate; };
-    const minus = document.createElement('button'); minus.textContent = '−'; minus.title = '降低倍速'; minus.onclick = () => adjust(-.1);
-    const display = document.createElement('span'); display.id = 'playback-rate'; display.title = '双击重置，滚轮调整';
-    const update = () => { display.textContent = `${audio.playbackRate.toFixed(1)}x`; }; update();
+    const control = document.createElement('div');
+    control.id = 'playback-rate-controller';
+    control.setAttribute('aria-label', '播放速度');
+    const adjust = delta => {
+      const next = Math.round((audio.playbackRate + delta) * 10) / 10;
+      if (next >= 0.1 && next <= 16) audio.playbackRate = next;
+    };
+    const minus = document.createElement('button');
+    minus.type = 'button'; minus.textContent = '−'; minus.title = '降低播放速度';
+    minus.addEventListener('click', () => adjust(-0.1));
+    const display = document.createElement('span');
+    display.id = 'playback-rate';
+    display.title = '双击重置为 1.0x，滚轮调整速度';
+    const update = () => { display.textContent = `${audio.playbackRate.toFixed(1)}x`; };
+    update();
     audio.addEventListener('ratechange', update);
-    display.ondblclick = () => { audio.playbackRate = 1; };
-    display.onwheel = event => { event.preventDefault(); adjust(event.deltaY < 0 ? .1 : -.1); };
-    const plus = document.createElement('button'); plus.textContent = '+'; plus.title = '提高倍速'; plus.onclick = () => adjust(.1);
-    control.append(minus, display, plus); holder.appendChild(control);
+    display.addEventListener('dblclick', () => { audio.playbackRate = 1; });
+    display.addEventListener('wheel', event => {
+      event.preventDefault();
+      adjust(event.deltaY < 0 ? 0.1 : -0.1);
+    }, { passive: false });
+    const plus = document.createElement('button');
+    plus.type = 'button'; plus.textContent = '+'; plus.title = '提高播放速度';
+    plus.addEventListener('click', () => adjust(0.1));
+    control.append(minus, display, plus);
+    const host = audio.closest('[class*="player"], [class*="Player"], footer') || audio.parentElement;
+    (host || document.body).appendChild(control);
   };
   let scheduled = false;
+  let refreshTimer = 0;
   const refresh = () => {
     scheduled = false;
+    refreshTimer = 0;
     addStyle();
-    document.querySelector('.cosmos-enhanced-container')?.remove();
-    if (isEpisode()) enhanceEpisode(); else if (isPodcast()) enhancePodcast();
+    if (isEpisode() && !document.querySelector('.cosmos-enhanced-container')) enhanceEpisode();
+    else if (isPodcast() && !document.querySelector('.cosmos-enhanced-container')) enhancePodcast();
     addPlaybackRate();
   };
   const scheduleRefresh = () => {
     if (scheduled) return;
-    scheduled = true; requestAnimationFrame(refresh);
+    scheduled = true;
+    refreshTimer = window.setTimeout(refresh, 180);
   };
-  const observer = new MutationObserver(() => scheduleRefresh());
+  const observer = new MutationObserver(mutations => {
+    const pageChanged = mutations.some(mutation => {
+      const changed = [...mutation.addedNodes, ...mutation.removedNodes];
+      return changed.some(node => node.nodeType === Node.ELEMENT_NODE
+        && !node.closest?.('.cosmos-enhanced-container, #playback-rate-controller, #cosmos-enhanced-style')
+        && !node.matches?.('.cosmos-enhanced-container, #playback-rate-controller, #cosmos-enhanced-style'));
+    });
+    if (pageChanged) scheduleRefresh();
+  });
   observer.observe(document.documentElement, { childList: true, subtree: true });
   let lastUrl = location.href;
-  window.setInterval(() => { if (location.href !== lastUrl) { lastUrl = location.href; scheduleRefresh(); } }, 800);
+  window.setInterval(() => {
+    if (location.href !== lastUrl) {
+      lastUrl = location.href;
+      document.querySelector('.cosmos-enhanced-container')?.remove();
+      currentAudio = null;
+      scheduleRefresh();
+    }
+  }, 800);
+  scheduleRefresh();
   document.addEventListener('click', event => {
     document.querySelectorAll('.cosmos-dropdown[open]').forEach(menu => { if (!menu.contains(event.target)) menu.open = false; });
   });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') document.querySelectorAll('.cosmos-dropdown[open]').forEach(menu => { menu.open = false; menu.querySelector('summary')?.focus(); });
   });
-  refresh();
 })();
