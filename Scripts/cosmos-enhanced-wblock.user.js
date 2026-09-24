@@ -64,37 +64,40 @@
   const downloadAudio = (url, name, buttonEl) => {
     const target = parseUrl(url);
     if (!target || !/^https?:$/.test(target.protocol)) return;
-    const fallback = () => {
+    const showFailure = message => {
       buttonEl.disabled = false;
-      buttonEl.dataset.fallbackUrl = target.href;
-      buttonEl.textContent = '🎵 在新页面打开音频';
-      buttonEl.title = '自动下载失败；再次点击打开音频后，可从浏览器菜单保存';
+      buttonEl.textContent = '⚠ 音频下载失败，点击重试';
+      buttonEl.title = message;
     };
     if (typeof GM_xmlhttpRequest !== 'function') {
-      fallback();
+      showFailure('wBlock 未提供 GM_xmlhttpRequest。请确认脚本已启用并在 wBlock 中应用更改。');
       return;
     }
     buttonEl.disabled = true;
-    buttonEl.textContent = '⏳ 正在准备音频…';
+    buttonEl.textContent = '⏳ 正在下载音频…';
     GM_xmlhttpRequest({
       method: 'GET',
       url: target.href,
-      responseType: 'blob',
+      responseType: 'arraybuffer',
+      timeout: 0,
       onload: response => {
-        if (response.status < 200 || response.status >= 300 || !response.response?.size) {
-          buttonEl.disabled = false;
-          fallback();
+        const data = response.response;
+        const byteLength = data instanceof Blob ? data.size : (data?.byteLength ?? data?.length ?? 0);
+        if (response.status < 200 || response.status >= 300 || !byteLength) {
+          showFailure(`音频服务器返回 HTTP ${response.status || '未知'}，请确认该节目可公开访问后重试。`);
           return;
         }
-        const blob = response.response.type ? response.response : new Blob([response.response], { type: 'audio/mp4' });
+        const mimeType = response.responseHeaders?.match(/content-type:\s*([^;\r\n]+)/i)?.[1] || 'audio/mp4';
+        const blob = data instanceof Blob ? data : new Blob([data], { type: mimeType });
         const objectUrl = URL.createObjectURL(blob);
         directDownload(objectUrl, `${cleanName(name)}${/\.[a-z0-9]{2,5}$/i.test(name) ? '' : '.m4a'}`);
         buttonEl.disabled = false;
         buttonEl.textContent = '🎵 音频已开始下载';
-        window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+        buttonEl.title = `${(blob.size / 1024 / 1024).toFixed(1)} MB`;
+        window.setTimeout(() => URL.revokeObjectURL(objectUrl), 120_000);
       },
-      onerror: () => { buttonEl.disabled = false; fallback(); },
-      ontimeout: () => { buttonEl.disabled = false; fallback(); },
+      onerror: () => showFailure('wBlock 请求音频 CDN 失败。请确认脚本已更新并允许 @connect xmcdn.com。'),
+      ontimeout: () => showFailure('音频请求超时。请重试，或确认当前网络可访问音频 CDN。'),
     });
   };
   const download = (url, name) => {
@@ -196,7 +199,7 @@
       const directAudioUrl = parseUrl(audioUrl)?.href;
       downloads.appendChild(button('🎵 下载单集音频', event => {
         const el = event.currentTarget;
-        if (el.dataset.fallbackUrl) { window.open(el.dataset.fallbackUrl, '_blank'); return; }
+        if (el.disabled) return;
         downloadAudio(directAudioUrl, `${ep || '小宇宙单集'} - ${pod || ''}`, el);
       }));
     }
