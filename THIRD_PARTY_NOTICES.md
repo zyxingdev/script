@@ -35,3 +35,12 @@ This repository contains personal scripts and local adaptations. It is not a sin
   - Removed conversion-only metadata fields (`tag`, `loon_version`, and `date`).
   - Kept the original MitM hostname and redirect behavior unchanged.
 - License status: no upstream license was independently confirmed. Attribution and source URLs are retained; downstream users should verify redistribution terms before broader distribution.
+
+## Cosmos Enhanced for wBlock
+
+- Upstream project and author: [LGiki/cosmos-enhanced](https://github.com/LGiki/cosmos-enhanced), by LGiki.
+- Upstream license: MIT License ([LICENSE](https://github.com/LGiki/cosmos-enhanced/blob/main/LICENSE)).
+- Local file: `Scripts/cosmos-enhanced-wblock.user.js`.
+- Adaptation: migrated the browser extension's page features to a standalone userscript for wBlock; replaced extension-only download and tab APIs with page link downloads and `window.open`; included userscript metadata, update URL, and page styles in the script.
+- Local maintainer/update URL: https://github.com/zyxingdev/script and https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js.
+- The upstream project remains credited in the script metadata and documentation. The upstream MIT license applies to the upstream-derived work; see the upstream license for its terms.
