@@ -55,6 +55,17 @@ https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Google/Google.stov
 
 ## 用户脚本
 
+### AI 网页总结助手 Pro
+
+- 脚本：[Scripts/AI网页总结助手Pro.user.js](Scripts/AI网页总结助手Pro.user.js)
+- 更新地址：
+
+```text
+https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/AI%E7%BD%91%E页%E6%80%BB%E7%BB%93%E5%8A%A9%E6%89%8BPro.user.js
+```
+
+可切换 Google Gemini、DeepSeek、智谱 GLM 或自定义兼容 API，为网页内容生成总结；支持侧栏、多语言、问答和导出。需在用户脚本管理器中配置所选服务的 API Key。
+
 ### Cosmos Enhanced for wBlock
 
 - 脚本：[Scripts/cosmos-enhanced-wblock.user.js](Scripts/cosmos-enhanced-wblock.user.js)
