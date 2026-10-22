@@ -1,104 +1,43 @@
 # script
 
-个人使用的代理客户端配置和覆写，按客户端与资源类型分类存放。
+个人自用的用户脚本、Quantumult X 重写片段和 Stash 覆写，按运行环境分类存放。
+
+## 资源导航
+
+| 分类 | 项目 | 用途 | 使用说明 |
+| --- | --- | --- | --- |
+| 用户脚本 | [AI 网页总结助手 Pro](Scripts/AI网页总结助手Pro.user.js) | 使用 AI 总结网页，支持问答和导出 | [脚本目录](Scripts/README.md#ai-网页总结助手-pro) |
+| 用户脚本 | [Cosmos Enhanced for wBlock](Scripts/cosmos-enhanced-wblock.user.js) | 小宇宙音频与封面下载、搜索及倍速调节 | [脚本目录](Scripts/README.md#cosmos-enhanced-for-wblock) |
+| 用户脚本 | [Cloudflare Checkbox Helper](Scripts/cf-checkbox-helper.user.js) | 尝试点击可访问的验证复选框，不保证通过 | [安装与限制](Scripts/docs/cf-checkbox-helper.md) |
+| Quantumult X | [京东去广告](QuantumultX/JD/JD_remove_ads.QX.snippet) | 京东 iOS 开屏及部分横幅广告过滤 | [安装与诊断](QuantumultX/JD/README.md) |
+| Stash | [Bilibili 去广告](Stash/Bilibili/Bilibili_remove_ads.stoverride) | 去广告，并调整历史记录相关域名处理 | [安装与说明](Stash/Bilibili/README.md) |
+| Stash | [Google 重定向](Stash/Google/Google.stoverride) | 搜索与地图请求从 `.cn` 重定向到 `.com` | [安装与说明](Stash/Google/README.md) |
+
+安装地址、订阅链接及各项目限制见对应使用说明。
 
 ## 目录结构
 
 ```text
 .
-├── QuantumultX/
-│   └── JD/                 # 京东去广告重写
-├── Stash/
+├── Scripts/                # 用户脚本索引与脚本文件
+│   └── docs/               # 单个用户脚本的详细说明
+├── QuantumultX/            # Quantumult X 资源索引
+│   └── JD/                 # 京东正式规则、诊断脚本及说明
+├── Stash/                  # Stash 资源索引
 │   ├── Bilibili/           # Bilibili 去广告覆写及说明
-│   └── Google/             # Google 搜索与地图重定向
-├── Scripts/                # 用户脚本
-├── LICENSES/               # 第三方许可证副本
-└── THIRD_PARTY_NOTICES.md  # 第三方来源与本地修改记录
+│   └── Google/             # Google 重定向覆写及说明
+├── LICENSE                 # 本仓库许可范围
+├── LICENSES/               # 许可证文本
+└── THIRD_PARTY_NOTICES.md   # 第三方来源与本地修改记录
 ```
 
-## Quantumult X
+## 来源与许可证
 
-### 京东去广告
+本仓库包含原创说明、本地适配、第三方派生文件及远程资源引用。由 zyxingdev 新增的说明文字和本地适配改动，在不覆盖第三方材料原有权利的前提下，按 Apache-2.0 许可提供；第三方材料保留各自的许可证和归属要求。
 
-- 文件：[JD_remove_ads.QX.snippet](QuantumultX/JD/JD_remove_ads.QX.snippet)
-- 订阅地址：
+- [许可范围](LICENSE) · [Apache-2.0 全文](LICENSES/Apache-2.0.txt)
+- [第三方来源、许可证及修改记录](THIRD_PARTY_NOTICES.md)
 
-```text
-https://raw.githubusercontent.com/zyxingdev/script/main/QuantumultX/JD/JD_remove_ads.QX.snippet
-```
+## 使用须知
 
-启用 Rewrite 与 MitM、安装并信任证书后，强制结束京东 App，清除已缓存的开屏广告，再重新打开。
-
-## Stash
-
-### Bilibili 去广告
-
-- 覆写：[Bilibili_remove_ads.stoverride](Stash/Bilibili/Bilibili_remove_ads.stoverride)
-- 说明：[Stash/Bilibili/README.md](Stash/Bilibili/README.md)
-- 订阅地址：
-
-```text
-https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Bilibili/Bilibili_remove_ads.stoverride
-```
-
-该版本保留 `app.bilibili.com` 去广告处理，同时让 `grpc.biliapi.net` 直连，以避免历史记录加载缓慢。
-
-### Google 搜索重定向
-
-- 覆写：[Google.stoverride](Stash/Google/Google.stoverride)
-- 说明：[Stash/Google/README.md](Stash/Google/README.md)
-- 订阅地址：
-
-```text
-https://raw.githubusercontent.com/zyxingdev/script/main/Stash/Google/Google.stoverride
-```
-
-## 用户脚本
-
-### AI 网页总结助手 Pro
-
-- 脚本：[Scripts/AI网页总结助手Pro.user.js](Scripts/AI网页总结助手Pro.user.js)
-- 更新地址：
-
-```text
-https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/AI%E7%BD%91%E9%A1%B5%E6%80%BB%E7%BB%93%E5%8A%A9%E6%89%8BPro.user.js
-```
-
-可切换 Google Gemini、DeepSeek、智谱 GLM 或自定义兼容 API，为网页内容生成总结；支持侧栏、多语言、问答和导出。需在用户脚本管理器中配置所选服务的 API Key。
-
-### Cosmos Enhanced for wBlock
-
-- 脚本：[Scripts/cosmos-enhanced-wblock.user.js](Scripts/cosmos-enhanced-wblock.user.js)
-- 更新地址：
-
-```text
-https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js
-```
-
-该脚本基于 [LGiki/cosmos-enhanced](https://github.com/LGiki/cosmos-enhanced) 移植为 wBlock 用户脚本，保留小宇宙音频与封面下载、ListenNotes 搜索和播放器倍速调节功能。原项目使用 MIT License，来源及修改说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
-
-### Cloudflare Checkbox Helper
-
-- 版本：`1.0.0`（第一版）
-- 脚本：[Scripts/cf-checkbox-helper.user.js](Scripts/cf-checkbox-helper.user.js)
-- 安装及使用说明：[Scripts/README.md](Scripts/README.md)
-- 安装地址：
-
-```text
-https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cf-checkbox-helper.user.js
-```
-
-尝试自动点击脚本可访问的 Cloudflare 验证复选框，每个实例最多点击一次。支持可见关联标签和开放的 Shadow DOM；不绕过验证，也不保证通过。已完成语法检查，尚未在 macOS Safari 真实验证页面实测。
-
-## 第三方来源与许可证
-
-本仓库包含第三方脚本的派生版本、配置引用和本地适配代码。第三方来源、已确认许可证和未确认许可证的部分记录在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
-
-- Bilibili 去广告覆写：基于 kokoryh 规则与 Kelee/Script Hub 转换结果进行本地调整，保留原作者及远程脚本来源说明。
-- Cosmos Enhanced for wBlock：基于 LGiki 的 Cosmos Enhanced 浏览器扩展移植，适配用户脚本运行方式并保留上游归属；原项目采用 MIT License。
-
-本仓库中由 zyxingdev 新增的说明文字和本地适配改动，在不覆盖第三方材料原有权利的前提下，按 Apache-2.0 许可提供。第三方材料继续遵循各自的上游许可证或授权状态。
-
-## 免责声明
-
-这些脚本和配置仅用于个人学习和自用场景。使用前请确认所在地区法律、目标服务条款、客户端规则以及上游项目许可证要求。
+这些脚本和配置用于个人学习和自用。使用前请确认目标服务条款、客户端规则、所在地区法律及上游许可证要求。具体安装条件和已知限制以各项目说明为准。
