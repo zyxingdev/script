@@ -77,6 +77,19 @@ https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-
 
 该脚本基于 [LGiki/cosmos-enhanced](https://github.com/LGiki/cosmos-enhanced) 移植为 wBlock 用户脚本，保留小宇宙音频与封面下载、ListenNotes 搜索和播放器倍速调节功能。原项目使用 MIT License，来源及修改说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
+### Cloudflare Checkbox Helper
+
+- 版本：`1.0.0`（第一版）
+- 脚本：[Scripts/cf-checkbox-helper.user.js](Scripts/cf-checkbox-helper.user.js)
+- 安装及使用说明：[Scripts/README.md](Scripts/README.md)
+- 安装地址：
+
+```text
+https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cf-checkbox-helper.user.js
+```
+
+尝试自动点击脚本可访问的 Cloudflare 验证复选框，每个实例最多点击一次。支持可见关联标签和开放的 Shadow DOM；不绕过验证，也不保证通过。已完成语法检查，尚未在 macOS Safari 真实验证页面实测。
+
 ## 第三方来源与许可证
 
 本仓库包含第三方脚本的派生版本、配置引用和本地适配代码。第三方来源、已确认许可证和未确认许可证的部分记录在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
