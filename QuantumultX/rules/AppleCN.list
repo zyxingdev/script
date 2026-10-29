@@ -2,7 +2,8 @@
 # Source: https://ruleset.skk.moe/List/non_ip/apple_cn.conf
 # Project: https://github.com/SukkaW/Surge
 # License: AGPL-3.0 https://github.com/SukkaW/Surge/blob/master/LICENSE
-# Source updated: 2026-08-05; adapted for Quantumult X on 2026-10-29
+# Additional China endpoints: https://github.com/ppmina/Quantumult_X-rules/blob/release/ruleset/apple.txt
+# Source updated: 2026-08-05; revised 2026-10-29
 # Use force-policy=direct when importing this remote filter.
 HOST-SUFFIX,apple.com.cn,DIRECT
 HOST-SUFFIX,cn.apple.com,DIRECT
@@ -13,3 +14,27 @@ HOST-SUFFIX,cn-ssl.ls.apple.com,DIRECT
 HOST,gs-loc-cn.apple.com,DIRECT
 HOST-SUFFIX,gspe19-cn-ssl.ls.apple.com,DIRECT
 HOST,appleintelligencefeedback.care.apple.com,DIRECT
+HOST,cdn-cn1.apple-mapkit.com,DIRECT
+HOST,cdn-cn2.apple-mapkit.com,DIRECT
+HOST,cdn-cn3.apple-mapkit.com,DIRECT
+HOST,cdn-cn4.apple-mapkit.com,DIRECT
+HOST,cl2-cn.apple.com,DIRECT
+HOST,cl4-cn.apple.com,DIRECT
+HOST,cn-smp-paymentservices.apple.com,DIRECT
+HOST,gsp10-ssl-cn.ls.apple.com,DIRECT
+HOST,gsp11-cn.ls.apple.com,DIRECT
+HOST,gsp12-cn.ls.apple.com,DIRECT
+HOST,gsp13-cn.ls.apple.com,DIRECT
+HOST,gsp4-cn.ls.apple.com.edgekey.net.globalredir.akadns.net,DIRECT
+HOST,gsp4-cn.ls.apple.com,DIRECT
+HOST,gsp5-cn.ls.apple.com,DIRECT
+HOST,gsp85-cn-ssl.ls.apple.com,DIRECT
+HOST,gspe11-2-cn-ssl.ls.apple.com,DIRECT
+HOST,gspe19-2-cn-ssl.ls-apple.com.akadns.net,DIRECT
+HOST,gspe19-2-cn-ssl.ls.apple.com,DIRECT
+HOST,gspe19-cn.ls-apple.com.akadns.net,DIRECT
+HOST,gspe19-cn.ls.apple.com,DIRECT
+HOST,gspe79-cn-ssl.ls.apple.com,DIRECT
+HOST,is-ssl.mzstatic.com-cn-lb.itunes-apple.com.akadns.net,DIRECT
+HOST,mesu-china.apple.com.akadns.net,DIRECT
+HOST,support-china.apple-support.akadns.net,DIRECT
