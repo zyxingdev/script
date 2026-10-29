@@ -9,6 +9,7 @@
 | 用户脚本 | [AI 网页总结助手 Pro](Scripts/AI网页总结助手Pro.user.js) | 使用 AI 总结网页，支持问答和导出 | [脚本目录](Scripts/README.md#ai-网页总结助手-pro) |
 | 用户脚本 | [Cosmos Enhanced for wBlock](Scripts/cosmos-enhanced-wblock.user.js) | 小宇宙音频与封面下载、搜索及倍速调节 | [脚本目录](Scripts/README.md#cosmos-enhanced-for-wblock) |
 | 用户脚本 | [Cloudflare Checkbox Helper](Scripts/cf-checkbox-helper.user.js) | 尝试点击可访问的验证复选框，不保证通过 | [安装与限制](Scripts/docs/cf-checkbox-helper.md) |
+| Quantumult X | [AI、AppleCN 和国内网站分流规则](QuantumultX/rules/README.md) | 按域名分流 AI、Apple 中国服务和国内网站 | [订阅与策略](QuantumultX/rules/README.md) |
 | Quantumult X | [京东去广告](QuantumultX/JD/JD_remove_ads.QX.snippet) | 京东 iOS 开屏及部分横幅广告过滤 | [安装与诊断](QuantumultX/JD/README.md) |
 | Stash | [Bilibili 去广告](Stash/Bilibili/Bilibili_remove_ads.stoverride) | 去广告，并调整历史记录相关域名处理 | [安装与说明](Stash/Bilibili/README.md) |
 | Stash | [Google 重定向](Stash/Google/Google.stoverride) | 搜索与地图请求从 `.cn` 重定向到 `.com` | [安装与说明](Stash/Google/README.md) |
@@ -22,7 +23,8 @@
 ├── Scripts/                # 用户脚本索引与脚本文件
 │   └── docs/               # 单个用户脚本的详细说明
 ├── QuantumultX/            # Quantumult X 资源索引
-│   └── JD/                 # 京东正式规则、诊断脚本及说明
+│   ├── JD/                 # 京东正式规则、诊断脚本及说明
+│   └── rules/              # AI、AppleCN 和国内网站分流规则
 ├── Stash/                  # Stash 资源索引
 │   ├── Bilibili/           # Bilibili 去广告覆写及说明
 │   └── Google/             # Google 重定向覆写及说明
