@@ -1,6 +1,6 @@
 # 用户脚本
 
-[返回仓库首页](../README.md)
+[返回仓库首页](../README.md) · [Quantumult X](../QuantumultX/README.md) · [Stash](../Stash/README.md)
 
 本目录存放浏览器用户脚本。各脚本的运行环境与权限需求不同，请按对应说明安装。
 
