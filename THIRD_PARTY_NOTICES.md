@@ -44,3 +44,9 @@ This repository contains personal scripts and local adaptations. It is not a sin
 - Adaptation: migrated the browser extension's page features to a standalone userscript for wBlock; replaced extension-only download and tab APIs with page link downloads and `window.open`; included userscript metadata, update URL, and page styles in the script.
 - Local maintainer/update URL: https://github.com/zyxingdev/script and https://raw.githubusercontent.com/zyxingdev/script/main/Scripts/cosmos-enhanced-wblock.user.js.
 - The upstream project remains credited in the script metadata and documentation. The upstream MIT license applies to the upstream-derived work; see the upstream license for its terms.
+
+## Quantumult X domain rules
+
+- `QuantumultX/rules/AppleCN.list`: adapted from [Sukka's Apple China rules](https://ruleset.skk.moe/List/non_ip/apple_cn.conf) (AGPL-3.0) with selected China endpoints referenced from [ppmina](https://github.com/ppmina/Quantumult_X-rules/blob/release/ruleset/apple.txt). See the file header for attribution.
+- `QuantumultX/rules/AI.list`: domain selections informed by [blackmatrix7](https://github.com/blackmatrix7/ios_rule_script), [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community), and [SurgeToolkit](https://github.com/imetn/SurgeToolkit/blob/main/Rules/ai.list); see file header.
+- `QuantumultX/rules/CN.list`: domain rules adapted from [blackmatrix7 China](https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/QuantumultX/China/China.list) and explicit domains from [v2fly geolocation-cn](https://github.com/v2fly/domain-list-community/blob/master/data/geolocation-cn). Local changes include format and policy conversion, selection and deduplication. License texts: [GPL-2.0](QuantumultX/rules/CN.LICENSE) and [MIT](QuantumultX/rules/CN-V2FLY.LICENSE).
