@@ -1,0 +1,63 @@
+# AI - Quantumult X overseas AI services
+# Updated: 2026-10-29
+# References:
+# https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/QuantumultX/OpenAI
+# https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/QuantumultX/Gemini
+# https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/QuantumultX/Claude
+# https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/
+# Set force-policy to your preferred proxy policy when importing.
+# Shared login, CDN and embedded services may require additional rules.
+
+# OpenAI / ChatGPT
+HOST-SUFFIX,openai.com,proxy
+HOST-SUFFIX,chatgpt.com,proxy
+HOST-SUFFIX,oaistatic.com,proxy
+HOST-SUFFIX,oaiusercontent.com,proxy
+HOST-SUFFIX,openaiapi-site.azureedge.net,proxy
+HOST-SUFFIX,openaicom.imgix.net,proxy
+HOST-SUFFIX,chatgpt.livekit.cloud,proxy
+HOST,openai-api.arkoselabs.com,proxy
+HOST,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net,proxy
+HOST,openaicomproductionae4b.blob.core.windows.net,proxy
+HOST,production-openaicom-storage.azureedge.net,proxy
+
+# Google Gemini / NotebookLM / AI Studio
+HOST-SUFFIX,gemini.google.com,proxy
+HOST-SUFFIX,bard.google.com,proxy
+HOST-SUFFIX,notebooklm.google.com,proxy
+HOST-SUFFIX,notebooklm.google,proxy
+HOST-SUFFIX,aistudio.google.com,proxy
+HOST,ai.google.dev,proxy
+HOST,makersuite.google.com,proxy
+HOST,alkalimakersuite-pa.clients6.google.com,proxy
+HOST-SUFFIX,generativelanguage.googleapis.com,proxy
+HOST-SUFFIX,proactivebackend-pa.googleapis.com,proxy
+HOST-SUFFIX,deepmind.com,proxy
+HOST-SUFFIX,deepmind.google,proxy
+HOST-SUFFIX,generativeai.google,proxy
+
+# Anthropic Claude
+HOST-SUFFIX,claude.ai,proxy
+HOST-SUFFIX,anthropic.com,proxy
+
+# Grok / xAI
+HOST-SUFFIX,grok.com,proxy
+HOST-SUFFIX,x.ai,proxy
+
+# Meta Muse
+HOST-SUFFIX,muse.ai,proxy
+
+# OpenRouter
+HOST-SUFFIX,openrouter.ai,proxy
+
+# Other AI services
+HOST-SUFFIX,perplexity.ai,proxy
+HOST-SUFFIX,midjourney.com,proxy
+HOST-SUFFIX,poe.com,proxy
+HOST-SUFFIX,character.ai,proxy
+HOST-SUFFIX,huggingface.co,proxy
+HOST-SUFFIX,mistral.ai,proxy
+HOST-SUFFIX,cohere.com,proxy
+HOST-SUFFIX,elevenlabs.io,proxy
+HOST-SUFFIX,runwayml.com,proxy
+HOST,copilot.microsoft.com,proxy
