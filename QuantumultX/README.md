@@ -1,7 +1,10 @@
 # Quantumult X
 
-Quantumult X 的重写片段与客户端专用脚本。
+[返回仓库首页](../README.md)
 
-| 项目 | 配置 | 说明 |
+| 类型 | 资源 | 用途与说明 |
 | --- | --- | --- |
-| JD | [JD_remove_ads.QX.snippet](JD/JD_remove_ads.QX.snippet) | 京东 iOS 开屏及部分横幅广告过滤；[安装与诊断](JD/README.md) |
+| 分流规则 | [rules/](rules/README.md) | AI 服务、Apple 中国服务及国内网站规则；包含订阅地址和策略设置 |
+| 重写 | [JD](JD/README.md) | 京东 iOS 开屏及部分横幅广告过滤，以及诊断资源 |
+
+分流规则和重写资源在 QX 中分别导入；具体安装步骤、依赖与限制见对应目录说明。
