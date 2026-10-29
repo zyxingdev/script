@@ -1,5 +1,7 @@
 # Bilibili 去广告（Stash）
 
+[返回 Stash](../README.md) · [返回仓库首页](../../README.md)
+
 [Bilibili_remove_ads.stoverride](Bilibili_remove_ads.stoverride) 是面向 Stash 的 Bilibili 去广告覆写。本地版本基于 kokoryh 的规则调整，在保留 `app.bilibili.com` 去广告处理的同时，让 `grpc.biliapi.net` 保持直连，避免历史记录页面因整域 MitM 出现明显加载延迟。
 
 ## 安装
