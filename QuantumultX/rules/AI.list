@@ -5,6 +5,8 @@
 # https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/QuantumultX/Gemini
 # https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/QuantumultX/Claude
 # https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/
+# Additional references: https://github.com/v2fly/domain-list-community/blob/master/data/category-ai-!cn
+# https://github.com/imetn/SurgeToolkit/blob/main/Rules/ai.list
 # Set force-policy to your preferred proxy policy when importing.
 # Shared login, CDN and embedded services may require additional rules.
 
@@ -61,3 +63,26 @@ HOST-SUFFIX,cohere.com,proxy
 HOST-SUFFIX,elevenlabs.io,proxy
 HOST-SUFFIX,runwayml.com,proxy
 HOST,copilot.microsoft.com,proxy
+
+# Additional AI services
+HOST-SUFFIX,oaistatsig.com,proxy
+HOST-SUFFIX,sora.com,proxy
+HOST-SUFFIX,chat.com,proxy
+HOST-SUFFIX,gemini.google,proxy
+HOST-SUFFIX,meta.ai,proxy
+HOST-SUFFIX,metaaiusercontent.com,proxy
+HOST-SUFFIX,metaaivm.com,proxy
+HOST-SUFFIX,groq.com,proxy
+HOST-SUFFIX,dify.ai,proxy
+HOST-SUFFIX,jasper.ai,proxy
+HOST-SUFFIX,openart.ai,proxy
+HOST-SUFFIX,clipdrop.co,proxy
+HOST-SUFFIX,cursor.com,proxy
+HOST-SUFFIX,windsurf.com,proxy
+HOST-SUFFIX,cohere.ai,proxy
+HOST-SUFFIX,copilot.cloud.microsoft,proxy
+HOST-SUFFIX,copilot.com,proxy
+HOST-SUFFIX,arena.ai,proxy
+# Google AI service endpoints
+HOST,alkalicore-pa.clients6.google.com,proxy
+HOST,aisandbox-pa.googleapis.com,proxy
