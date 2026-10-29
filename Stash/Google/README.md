@@ -1,5 +1,7 @@
 # Google 搜索重定向（Stash）
 
+[返回 Stash](../README.md) · [返回仓库首页](../../README.md)
+
 [Google.stoverride](Google.stoverride) 将 `google.cn` 的搜索与地图请求重定向到对应的 `.com` 域名。
 
 ## 订阅
