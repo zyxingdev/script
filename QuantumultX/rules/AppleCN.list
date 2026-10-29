@@ -1,0 +1,15 @@
+# AppleCN - Apple 中国大陆专用服务域名
+# Source: https://ruleset.skk.moe/List/non_ip/apple_cn.conf
+# Project: https://github.com/SukkaW/Surge
+# License: AGPL-3.0 https://github.com/SukkaW/Surge/blob/master/LICENSE
+# Source updated: 2026-08-05; adapted for Quantumult X on 2026-10-29
+# Use force-policy=direct when importing this remote filter.
+HOST-SUFFIX,apple.com.cn,DIRECT
+HOST-SUFFIX,cn.apple.com,DIRECT
+HOST-SUFFIX,icloud.com.cn,DIRECT
+HOST-SUFFIX,cn.ls.apple.com,DIRECT
+HOST,api.smoot.apple.cn,DIRECT
+HOST-SUFFIX,cn-ssl.ls.apple.com,DIRECT
+HOST,gs-loc-cn.apple.com,DIRECT
+HOST-SUFFIX,gspe19-cn-ssl.ls.apple.com,DIRECT
+HOST,appleintelligencefeedback.care.apple.com,DIRECT
